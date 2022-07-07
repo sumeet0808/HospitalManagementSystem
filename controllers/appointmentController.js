@@ -5,7 +5,7 @@ import { BadRequestError, NotFoundError } from "../errors/index.js";
 import connectDB from "../db/connect.js";
 
 //Admin
-//asdfghjklwertyuiojhgfdszxcvnmnvcxfghjhgfdfghjjhgfdfghj
+//asdfghjklwertyuiojhgfdszxcvnmnvcxfghjhgfdfghjjhgfdfghjasd
 const getAllAppointmentsForAdmin = async (req, res) => {
   const appointment = await Appointment.aggregate([
     {
