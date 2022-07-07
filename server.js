@@ -1,13 +1,14 @@
 import express from 'express'
 const app = express()
+import cors from 'cors'
 import dotenv from 'dotenv'
 dotenv.config()
 import 'express-async-errors'
 import morgan from 'morgan'
 
-import { dirname } from 'path'
-import { fileURLToPath } from 'url'
-import path from 'path'
+// import { dirname } from 'path'
+// import { fileURLToPath } from 'url'
+// import path from 'path'
 
 import helmet from 'helmet'
 import xss from 'xss-clean'
@@ -18,8 +19,12 @@ import mongoSanitize from 'express-mongo-sanitize'
 import connectDB from './db/connect.js'
 
 // routers
-import authRouter from './routes/authRoutes.js'
-import jobsRouter from './routes/jobsRoutes.js'
+import authRouter from "./routes/authRoutes.js";
+import doctorsRouter from './routes/doctorsRoutes.js'
+import contactRouter from './routes/contactRoutes.js'
+import patientRouter from './routes/patientRoutes.js'
+import appointmentRouter from './routes/appointmentRoutes.js'
+import prescribeRouter from './routes/prescribeRoutes.js'
 
 // middleware
 import notFoundMiddleware from './middleware/not-found.js'
@@ -30,18 +35,24 @@ if (process.env.NODE_ENV !== 'production') {
   app.use(morgan('dev'))
 }
 
-const __dirname = dirname(fileURLToPath(import.meta.url))
+// const __dirname = dirname(fileURLToPath(import.meta.url))
 
 // only when ready to deploy
 // app.use(express.static(path.resolve(__dirname, './client/build')))
-
+app.use(cors())
 app.use(express.json())
 app.use(helmet())
 app.use(xss())
 app.use(mongoSanitize())
 
-app.use('/api/v1/auth', authRouter)
-app.use('/api/v1/jobs', authenticateUser, jobsRouter)
+app.use("/api/v1/auth", authRouter);
+app.use('/api/v1/doctors', doctorsRouter)
+app.use('/api/v1/contact', contactRouter)
+app.use('/api/v1/patient', patientRouter)
+app.use('/api/v1/appointment',appointmentRouter)
+app.use('/api/v1/prescribe',prescribeRouter)
+
+
 
 // only when ready to deploy
 // app.get('*', (req, res) => {
@@ -50,6 +61,8 @@ app.use('/api/v1/jobs', authenticateUser, jobsRouter)
 
 app.use(notFoundMiddleware)
 app.use(errorHandlerMiddleware)
+
+
 
 const port = process.env.PORT || 5000
 
