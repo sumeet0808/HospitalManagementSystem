@@ -1,18 +1,18 @@
 import mongoose from "mongoose";
 const PrescribeSchema = new mongoose.Schema({
-  Disease: {
+  disease: {
     type: String,
     required: [true, "Enter a disease !"],
   },
-  Allergies: {
+  allergies: {
     type: String,
     required: [true, "Enter a Allergies !"],
   },
-  Prescription: {
+  prescription: {
     type: String,
     required: [true, "Enter a Prescription !"],
   },
-  pid: {
+  pId: {
     type: String,
     required: [true, "Enter a pid !"],
   },

@@ -1,27 +1,33 @@
-import express from 'express'
-const router = express.Router()
+import express from "express";
+const router = express.Router();
 
 import {
   getAppointmentPrescriptionList,
-  cancleAppointmentStatus,
+  cancelAppointmentStatusByDoctor,
+  cancelAppointmentStatusByPatient,
   getAllAppointmentForDoctor,
   getAllAppointmentsForAdmin,
-  getAppointmentByFields,
-  getAllAppointmentsForPatient,
   createAppointment,
+  getAppointmentByPatientId,
 } from "../controllers/appointmentController.js";
-import { protect } from "../controllers/authController.js";
-
+//import { protect } from "../controllers/authController.js";
 
 router
-  .route("/")
-  .get(protect,getAllAppointmentsForAdmin).get(getAppointmentPrescriptionList)
-router.route("/getAllAppointment").get(getAllAppointmentForDoctor);
-router.route("/cancelAppointment").post(cancleAppointmentStatus);
-router.route('/getAppointmentByFields').get(getAppointmentByFields);
-router.route("/getallappointments").get(getAllAppointmentsForPatient);
-router.route("/createAppointment").post(createAppointment);
-// // remember about :id
-// router.route('/:emailId').delete(deleteDoctorByEmail)
+  .route("/getAllAppointmentsForAdmin")
+  //.get(protect, getAllAppointmentsForAdmin);
+  .get(getAllAppointmentsForAdmin);
+router
+  .route("/getAppointmentPrescriptionList")
+  .get(getAppointmentPrescriptionList);
+router.route("/getAllAppointmentForDoctor").get(getAllAppointmentForDoctor);
+router
+  .route("/cancelAppointmentStatusByDoctor")
+  .post(cancelAppointmentStatusByDoctor);
+router
+  .route("/cancelAppointmentStatusByPatient")
+  .post(cancelAppointmentStatusByPatient);
 
-export default router
+router.route("/getAppointmentByPatientId/:pId").get(getAppointmentByPatientId);
+router.route("/createAppointment").post(createAppointment);
+
+export default router;

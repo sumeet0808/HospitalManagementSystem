@@ -1,23 +1,23 @@
 import Prescribe from "../models/PrescribeModel.js";
 import { StatusCodes } from "http-status-codes";
-import appointments from "../models/AppointmentModel.js";
+import Appointment from "../models/AppointmentModel.js";
 // import prescribes from "../models/PrescribeModel.js";
 
 const createPrescription = async (req, res) => {
   //const { Disease, Allergies, Prescription } = req.body;
   try {
-    const Prescription = await doctors.create({
-      Disease: req.body.Disease,
-      Allergies: req.body.Allergies,
-      Prescription: req.body.Prescription,
-      pid: req.params.pid,
+    const Prescription = await Prescribe.create({
+      disease: req.body.disease,
+      allergies: req.body.allergies,
+      prescription: req.body.prescription,
+      pId: req.params.pId,
     });
 
     res.status(StatusCodes.CREATED).json({
       Prescription: {
-        Disease: Prescription.Disease,
-        Allergies: Prescription.Allergies,
-        Prescription: Prescription.Prescription,
+        disease: Prescription.disease,
+        allergies: Prescription.allergies,
+        prescription: Prescription.prescription,
       },
     });
   } catch (error) {
@@ -29,35 +29,66 @@ const createPrescription = async (req, res) => {
   }
 };
 
-const getAllPrescribe = async (req, res) => {
-  const prescribe = await appointments.aggregate([
+const getAllPatientPrescriptionForAdmin = async (req, res) => {
+  const prescribe = await Appointment.aggregate([
     {
       $project: {
         doctorName: 1,
-        pid: 1,
-        fname: 1,
-        lname: 1,
-        ID: 1,
-        appdate: 1,
-        apptime: 1,
+        pId: 1,
+        firstName: 1,
+        lastName: 1,
+        appDate: 1,
+        appTime: 1,
         _id: 0,
       },
     },
     {
       $lookup: {
         from: "prescribes",
+        localField: "pId",
+        foreignField: "pId",
+        as: "Prescription",
+      },
+    },
+    { $unwind: "$Prescription" },
+  ]);
+  res.status(200).json({
+    status: "success",
+    prescribe,
+  });
+};
+
+const getAllPatientPrescriptionForDoctor = async (req, res) => {
+  const data = await Appointment.aggregate([
+    {
+      $project: {
+        pId: 1,
+        firstName: 1,
+        lastName: 1,
+        appDate: 1,
+        appTime: 1,
+        _id: 0,
+      },
+    },
+    {
+      $lookup: {
+        from: "doctors",
         localField: "pid",
         foreignField: "pid",
         as: "Prescription",
       },
     },
     { $unwind: "$Prescription" },
-   
   ]);
+  // const result = await console.log("getAllList", getAllList);
   res.status(200).json({
     status: "success",
-    prescribe  
+    data,
   });
 };
 
-export { createPrescription, getAllPrescribe };
+export {
+  createPrescription,
+  getAllPatientPrescriptionForAdmin,
+  getAllPatientPrescriptionForDoctor,
+};

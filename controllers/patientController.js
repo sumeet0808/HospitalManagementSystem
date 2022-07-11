@@ -2,7 +2,6 @@ import Patient from "../models/PatientModel.js";
 import { StatusCodes } from "http-status-codes";
 import { BadRequestError, NotFoundError } from "../errors/index.js";
 
-
 const getAllPatients = async (req, res) => {
   console.log("qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq");
   const patient = await Patient.aggregate([
@@ -29,4 +28,4 @@ const getPatientByContact = async (req, res) => {
   res.status(StatusCodes.OK).json({ status: "success", patient });
 };
 
-export {  getAllPatients, getPatientByContact };
+export { getAllPatients, getPatientByContact };

@@ -8,18 +8,20 @@ import { StatusCodes } from "http-status-codes";
 import { BadRequestError, UnAuthenticatedError } from "../errors/index.js";
 
 const register = async (req, res) => {
-  const { firstName, lastName, emailId, phoneNo, password, gender } = req.bodyl;
+  console.log("===========inside register");
+  const { firstName, lastName, emailId, phoneNo, password, gender } = req.body;
+  console.log("req.body::::::", req.body);
 
   if (!firstName || !lastName || !emailId || !phoneNo || !password || !gender) {
     throw new BadRequestError("please provide all values");
   }
-
+  console.log("===========inside register===please provide all values");
   const userAlreadyExists = await Patient.findOne({ emailId });
-
+  console.log("===========inside register===emailid");
   if (userAlreadyExists) {
     throw new BadRequestError("Email already in use");
   }
-
+  console.log("===========inside register===Email already in use");
   const patient = await Patient.create({
     firstName,
     lastName,
@@ -28,24 +30,35 @@ const register = async (req, res) => {
     password,
     gender,
   });
+  console.log("patient:::::::::", patient);
 
   const token = patient.createJWT();
 
   res.status(StatusCodes.CREATED).json({
     patient: {
       firstName: patient.firstName,
+
       lastName: patient.lastName,
+
       emailId: patient.emailId,
+
       phoneNo: patient.phoneNo,
+
       password: patient.password,
+
+      //ConfirmPassword: patient.confirmPassword,
+
       gender: patient.gender,
     },
+
     token,
   });
 };
 
 const login = async (req, res) => {
+  console.log("========inside login");
   const { emailId, password, role } = req.body;
+  console.log("========req.body2");
   if (role == "Patient") {
     console.log("in patient....................");
     if (!emailId || !password) {
@@ -59,9 +72,11 @@ const login = async (req, res) => {
     if (!isPasswordCorrect) {
       throw new UnAuthenticatedError("Invalid Credentials");
     }
+    console.log("logging Succcessfully");
     const token = patient.createJWT();
     patient.password = undefined;
-    res.status(StatusCodes.OK).json({ patient, token });
+    res.status(StatusCodes.OK).json({ patient, token })
+    console.log("logging Succcessfully", patient, token);
   } else if (role == "Doctor") {
     console.log(" in doctor......................");
     if (!emailId || !password) {
@@ -98,37 +113,33 @@ const login = async (req, res) => {
   }
 };
 
-const protect = async (req, res, next) => {
-  // 1) Getting token and check of it's there
-  let token;
-  if (
-    req.headers.authorization &&
-    req.headers.authorization.startsWith("Bearer")
-  ) {
-    token = req.headers.authorization.split(" ")[1];
-  }
+// const protect = async (req, res, next) => {
+//   // 1) Getting token and check of it's there
+//   let token;
+//   if (
+//     req.headers.authorization &&
+//     req.headers.authorization.startsWith("Bearer")
+//   ) {
+//     token = req.headers.authorization.split(" ")[1];
+//   }
 
+//   if (!token) {
+//     return next("You are not logged in! Please log in to get access.", 401);
+//   }
 
-  if (!token) {
-    return next("You are not logged in! Please log in to get access.", 401);    
-  }
+//   // 2) Verification token
+//   const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
 
-  // 2) Verification token
-  const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
+//   // 3) Check if user still exists
+//   const currentUser = await Admin.findById(decoded.userId);
+//   if (!currentUser) {
+//     return next("The user belonging to this token does no longer exist.", 401);
+//   }
 
-  // 3) Check if user still exists
-  const currentUser = await Admin.findById(decoded.userId);
-  if (!currentUser) {
-    return next( 
-        "The user belonging to this token does no longer exist.",
-        401
-      )
-    
-  }
+//   // GRANT ACCESS TO PROTECTED ROUTE
+//   req.user = currentUser;
+//   next();
+// };
+//export { register, login, protect };
 
-
-  // GRANT ACCESS TO PROTECTED ROUTE
-  req.user = currentUser;
-  next();
-};
-export { register, login, protect };
+export { register, login };

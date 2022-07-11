@@ -1,12 +1,18 @@
-import express from 'express'
-const router = express.Router()
+import express from "express";
+const router = express.Router();
 
 import {
   createPrescription,
-  getAllPrescribe,
+  getAllPatientPrescriptionForAdmin,
+  getAllPatientPrescriptionForDoctor,
 } from "../controllers/prescribeController.js";
-import { protect } from "../controllers/authController.js";
 
-router.route("/").post(createPrescription).get(protect, getAllPrescribe);
+router.route("/createPrescription/:pId").post(createPrescription);
+router
+  .route("/getAllPatientPrescriptionForAdmin")
+  .get(getAllPatientPrescriptionForAdmin);
 
+router
+  .route("/getAllPatientPrescriptionForDoctor")
+  .get(getAllPatientPrescriptionForDoctor);
 export default router;
