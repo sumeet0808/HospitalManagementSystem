@@ -5,16 +5,10 @@ import dotenv from "dotenv";
 dotenv.config();
 import "express-async-errors";
 import morgan from "morgan";
-
-// import { dirname } from 'path'
-// import { fileURLToPath } from 'url'
-// import path from 'path'
-
 import helmet from "helmet";
 import xss from "xss-clean";
 import mongoSanitize from "express-mongo-sanitize";
 
-// hello
 // db and authenticateUser
 import connectDB from "./db/connect.js";
 
@@ -30,6 +24,19 @@ import prescribeRouter from "./routes/prescribeRoutes.js";
 import notFoundMiddleware from "./middleware/not-found.js";
 import errorHandlerMiddleware from "./middleware/error-handler.js";
 import authenticateUser from "./middleware/auth.js";
+const allowedOrigin = ['http://localhost:5000'];
+app.use(cors({
+  credentials: true,
+  origin: allowedOrigin
+}));
+app.use(function (req, res, next) {
+  res.header('Access-Control-Allow-Origin', req.headers.origin);
+  res.header('Access-Control-Allow-Credentials', "true");
+  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,UPDATE,OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept');
+  res.setHeader('Access-Control-Allow-Headers', 'Set-Cookie')
+  next();
+});
 
 if (process.env.NODE_ENV !== "production") {
   app.use(morgan("dev"));
