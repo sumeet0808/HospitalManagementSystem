@@ -3,10 +3,7 @@ import { StatusCodes } from "http-status-codes";
 import { BadRequestError, NotFoundError } from "../errors/index.js";
 
 const createDoctor = async (req, res) => {
-  // const admin = await Admin.find();
-   console.log("qqqqqqqqqqqqqqqq")
-  
-    const {
+  const {
     doctorName,
     specialization,
     emailId,
@@ -51,11 +48,8 @@ const deleteDoctorByEmail = async (req, res) => {
     throw new NotFoundError(`No doctor with id :${doctorEmail}`);
   }
 
-   const result = await doctor.remove();
-  res
-    .status(StatusCodes.OK)
-    .json({ msg: "Success! Doctor removed from list" });
+  const result = await doctor.remove();
+  res.status(StatusCodes.OK).json({ msg: "Success! Doctor removed from list" });
 };
-
 
 export { createDoctor, deleteDoctorByEmail, getAllDoctors };

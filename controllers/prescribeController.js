@@ -1,10 +1,8 @@
 import Prescribe from "../models/PrescribeModel.js";
 import { StatusCodes } from "http-status-codes";
 import Appointment from "../models/AppointmentModel.js";
-// import prescribes from "../models/PrescribeModel.js";
 
 const createPrescription = async (req, res) => {
-  //const { Disease, Allergies, Prescription } = req.body;
   try {
     const Prescription = await Prescribe.create({
       disease: req.body.disease,
@@ -80,7 +78,6 @@ const getAllPatientPrescriptionForDoctor = async (req, res) => {
     },
     { $unwind: "$Prescription" },
   ]);
-  // const result = await console.log("getAllList", getAllList);
   res.status(200).json({
     status: "success",
     data,

@@ -4,8 +4,6 @@ import { BadRequestError, NotFoundError } from "../errors/index.js";
 
 const createQueries = async (req, res) => {
   const { userName, email, contact, message } = req.body;
-
-  console.log("req.body::::::::::::", req.body);
   if (!userName || !email || !contact || !message) {
     throw new BadRequestError("Please provide all values");
   }
@@ -13,7 +11,6 @@ const createQueries = async (req, res) => {
   res.status(StatusCodes.CREATED).json({ status: "success", contacts });
 };
 const getAllQueries = async (req, res) => {
-  // NO AWAIT
   let result = Contact.find();
   const contacts = await result;
   res.status(StatusCodes.OK).json({ status: "success", contacts });

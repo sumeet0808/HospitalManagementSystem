@@ -6,29 +6,29 @@ import jwt from "jsonwebtoken";
 const AdminSchema = new mongoose.Schema({
   firstName: {
     type: String,
-    required: [true, "pls enter First name"],
+    required: [true, "Please enter First name"],
     minlength: 3,
     maxlength: 20,
     trim: true,
   },
   emailId: {
     type: String,
-    required: [true, "pls enter email"],
+    required: [true, "Please enter email"],
     validate: {
       validator: validator.isEmail,
-      message: "pls provide a valid email",
+      message: "Please provide a valid email",
     },
     unique: true,
   },
   password: {
     type: String,
-    required: [true, "pls enter password"],
+    required: [true, "Please enter password"],
     minlength: 3,
     select: false,
   },
   confirmPassword: {
     type: String,
-    required: [true, "pls confirm password"],
+    required: [true, "Please confirm password"],
     minlength: 3,
     select: false,
   },

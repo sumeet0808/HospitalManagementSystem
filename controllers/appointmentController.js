@@ -1,14 +1,9 @@
 import Appointment from "../models/AppointmentModel.js";
-import Doctor from "../models/DoctorModel.js";
-import Patient from "../models/PatientModel.js";
 import { currentStatus } from "./constants.js";
-
 import { StatusCodes } from "http-status-codes";
 import { BadRequestError, NotFoundError } from "../errors/index.js";
-import connectDB from "../db/connect.js";
 
 //Admin
-//asdfghjklwertyuiojhgfdszxcvnmnvcxfghjhgfdfghjjhgfdfghjasd
 const getAllAppointmentsForAdmin = async (req, res) => {
   const appointment = await Appointment.aggregate([
     {
@@ -82,7 +77,6 @@ const getAppointmentPrescriptionList = async (req, res) => {
     },
     { $unwind: "$Prescription" },
   ]);
-  // const result = await console.log("getAllList", getAllList);
   res.status(200).json({
     status: "Success",
     data,
@@ -90,12 +84,10 @@ const getAppointmentPrescriptionList = async (req, res) => {
 };
 //Doctor
 const cancelAppointmentStatusByDoctor = async (req, res) => {
-  console.log("Inside Status", currentStatus);
   const statusName = Object.keys(currentStatus).find(
     (key) => currentStatus[key] == req.body.Status
   );
-  console.log("statusName", statusName);
-  console.log("reqbody......", req.body);
+
   const data = await Appointment.findOneAndUpdate(
     {
       _id: req.body,
@@ -108,31 +100,23 @@ const cancelAppointmentStatusByDoctor = async (req, res) => {
     data,
   });
 };
-
-
+//Patient
 const cancelAppointmentStatusByPatient = async (req, res) => {
-  console.log("Inside Status", currentStatus);
   const statusName = Object.keys(currentStatus).find(
     (key) => currentStatus[key] == req.body.Status
   );
-  console.log("statusName", statusName);
-  console.log("reqbody......", req.body);
   const data = await Appointment.findOneAndUpdate(
     {
       _id: req.body.AppointmentId,
     },
     { $set: { currentStatus: statusName } },
     { new: true }
-  ); //condition
+  );
   res.status(200).json({
     status: "Success",
     data,
   });
 };
-
-
-
-
 //Patient
 const getAppointmentByPatientId = async (req, res) => {
   const { pId: patientId } = req.params;
@@ -146,7 +130,6 @@ const getAppointmentByPatientId = async (req, res) => {
     patient,
   });
 };
-
 //Patient
 const createAppointment = async (req, res, next) => {
   try {
@@ -179,35 +162,6 @@ const createAppointment = async (req, res, next) => {
   }
 };
 
-// const createAppointment = async (req, res) => {
-//   const data = await Appointment.aggregate([
-//     {
-//       $project: {
-//         pid: 1,
-//         fname: 1,
-//         lname: 1,
-//         ID: 1,
-//         appdate: 1,
-//         apptime: 1,
-//         _id: 0,
-//       },
-//     },
-//     {
-//       $lookup: {
-//         from: "doctors",
-//         localField: "pid",
-//         foreignField: "pid",
-//         as: "Prescription",
-//       },
-//     },
-//     { $unwind: "$Prescription" },
-//   ]);
-//   // const result = await console.log("getAllList", getAllList);
-//   res.status(200).json({
-//     status: "Success",
-//     data,
-//   });
-// };
 
 export {
   getAppointmentPrescriptionList,

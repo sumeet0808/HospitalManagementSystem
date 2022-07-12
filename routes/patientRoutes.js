@@ -11,8 +11,8 @@ import {
 // // remember about :id
 // router.route("/getPatientByContact/:contact").get(protect, getPatientByContact);
 
-router.route("/getAllPatients").get( getAllPatients);
+router.route("/getAllPatients").get(getAllPatients);
 // remember about :id
-router.route("/getPatientByContact/:contact").get( getPatientByContact);
+router.route("/getPatientByContact/:contact").get(getPatientByContact);
 
 export default router;

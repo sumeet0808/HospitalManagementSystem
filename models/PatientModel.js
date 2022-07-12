@@ -26,21 +26,7 @@ const PatientSchema = new mongoose.Schema({
     minlength: 3,
     select: false,
   },
-  // confirmPassword: {
-  //     type: String,
-  //     required: [true, 'pls confirm password'],
-  //     minlength: 3,
-  //     select: false
-  // validate: {
-  //     // This only works on CREATE and SAVE!!!
-
-  //     validator: function (el) {
-  //         return el === this.password;
-  //     },
-  //     message: 'Passwords are not the same!'
-  // },
-  // },
-  lastName: {
+   lastName: {
     type: String,
     required: [true, "pls enter Last name"],
     minlength: 3,

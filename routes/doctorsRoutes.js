@@ -15,11 +15,8 @@ import {
 //   .route("/deleteDoctorByEmail/:emailId")
 //   .delete(protect, deleteDoctorByEmail);
 
-router.route("/createDoctor").post( createDoctor);
-router.route("/getAllDoctors").get( getAllDoctors);
-// remember about :id
-router
-  .route("/deleteDoctorByEmail/:emailId")
-  .delete( deleteDoctorByEmail);
+router.route("/createDoctor").post(createDoctor);
+router.route("/getAllDoctors").get(getAllDoctors);
+router.route("/deleteDoctorByEmail/:emailId").delete(deleteDoctorByEmail);
 
 export default router;
