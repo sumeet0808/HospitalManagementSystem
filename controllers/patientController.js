@@ -10,7 +10,7 @@ const getAllPatients = async (req, res) => {
         firstName: 1,
         lastName: 1,
         gender: 1,
-        email: 1,
+        emailId: 1,
         phoneNo: 1,
         password: 1,
         _id: 1,
@@ -22,7 +22,6 @@ const getAllPatients = async (req, res) => {
 
 const getPatientByContact = async (req, res) => {
   const { phoneNo: patientContact } = req.params;
-  console.log("req.params:::::::::::::::", req.params);
   const patient = await Patient.findOne({ phoneNo: patientContact });
   if (!patient) {
     throw new NotFoundError(`No patient with id :${patientContact}`);
@@ -33,4 +32,13 @@ const getPatientByContact = async (req, res) => {
   });
 };
 
-export { getAllPatients, getPatientByContact };
+const verifyPatientByEmail = async (req, res) => {
+  const { emailId: patientEmail } = req.params;
+  const patient = await Patient.findOne({ emailId: patientEmail });
+   if (!patient) {
+     throw new NotFoundError(`No patient with id :${patientContact}`);
+   }
+  res.status(StatusCodes.OK).json({ status: "Success", patient });
+};
+
+export { getAllPatients, getPatientByContact, verifyPatientByEmail };

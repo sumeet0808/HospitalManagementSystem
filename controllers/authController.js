@@ -51,6 +51,7 @@ const patientLogin = async (req, res, next) => {
     const patient = await Patient.findOne({
       emailId,
     }).select("+password");
+    console.log("patient::::::", patient);
     if (!patient) {
       throw new UnAuthenticatedError("invalid cerdentials");
     }
