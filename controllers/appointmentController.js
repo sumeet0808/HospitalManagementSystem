@@ -161,6 +161,18 @@ const createAppointment = async (req, res, next) => {
     next(err);
   }
 };
+//Admin
+const getAppointmentByContact = async (req, res) => {
+  const { contact: appointmentContact } = req.params;
+  const appointment = await Appointment.findOne({ contact: appointmentContact });
+  if (!appointment) {
+    throw new NotFoundError(`No appointment with id :${appointmentContact}`);
+  }
+  res.status(StatusCodes.OK).json({
+    status: "Success",
+    appointment,
+  });
+};
 
 
 export {
@@ -171,4 +183,5 @@ export {
   getAllAppointmentsForAdmin,
   getAppointmentByPatientId,
   createAppointment,
+  getAppointmentByContact,
 };

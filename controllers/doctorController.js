@@ -51,5 +51,16 @@ const deleteDoctorByEmail = async (req, res) => {
   const result = await doctor.remove();
   res.status(StatusCodes.OK).json({ msg: "Success! Doctor removed from list" });
 };
+const getDoctorByEmail = async (req, res) => {
+  const { emailId: doctorEmail } = req.params;
+  const doctor = await Doctor.findOne({ emailId: doctorEmail });
+  if (!doctor) {
+    throw new NotFoundError(`No doctor with id :${doctorEmail}`);
+  }
+  res.status(StatusCodes.OK).json({
+    status: "Success",
+    doctor,
+  });
+};
 
-export { createDoctor, deleteDoctorByEmail, getAllDoctors };
+export { createDoctor, deleteDoctorByEmail, getAllDoctors, getDoctorByEmail };

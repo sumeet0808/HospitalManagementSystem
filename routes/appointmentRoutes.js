@@ -9,6 +9,7 @@ import {
   getAllAppointmentsForAdmin,
   createAppointment,
   getAppointmentByPatientId,
+  getAppointmentByContact,
 } from "../controllers/appointmentController.js";
 //import { protect } from "../controllers/authController.js";
 
@@ -29,5 +30,6 @@ router
 
 router.route("/getAppointmentByPatientId/:pId").get(getAppointmentByPatientId);
 router.route("/createAppointment").post(createAppointment);
+router.route("/getAppointmentByContact/:contact").get(getAppointmentByContact);
 
 export default router;

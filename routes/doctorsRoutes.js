@@ -5,6 +5,7 @@ import {
   createDoctor,
   deleteDoctorByEmail,
   getAllDoctors,
+  getDoctorByEmail,
 } from "../controllers/doctorController.js";
 // import { protect } from "../controllers/authController.js";
 
@@ -18,5 +19,7 @@ import {
 router.route("/createDoctor").post(createDoctor);
 router.route("/getAllDoctors").get(getAllDoctors);
 router.route("/deleteDoctorByEmail/:emailId").delete(deleteDoctorByEmail);
+router.route("/getDoctorByEmail/:emailId").get(getDoctorByEmail);
+
 
 export default router;
