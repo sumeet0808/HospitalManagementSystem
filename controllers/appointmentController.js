@@ -58,20 +58,19 @@ const getAppointmentPrescriptionList = async (req, res) => {
   const data = await appointments.aggregate([
     {
       $project: {
-        pid: 1,
-        fname: 1,
-        lname: 1,
-        ID: 1,
-        appdate: 1,
-        apptime: 1,
+        pId: 1,
+        firstName: 1,
+        LastName: 1,
+        appDate: 1,
+        appTime: 1,
         _id: 0,
       },
     },
     {
       $lookup: {
         from: "doctors",
-        localField: "pid",
-        foreignField: "pid",
+        localField: "pId",
+        foreignField: "pId",
         as: "Prescription",
       },
     },
@@ -164,7 +163,9 @@ const createAppointment = async (req, res, next) => {
 //Admin
 const getAppointmentByContact = async (req, res) => {
   const { contact: appointmentContact } = req.params;
-  const appointment = await Appointment.findOne({ contact: appointmentContact });
+  const appointment = await Appointment.findOne({
+    contact: appointmentContact,
+  });
   if (!appointment) {
     throw new NotFoundError(`No appointment with id :${appointmentContact}`);
   }
@@ -173,7 +174,6 @@ const getAppointmentByContact = async (req, res) => {
     appointment,
   });
 };
-
 
 export {
   getAppointmentPrescriptionList,
