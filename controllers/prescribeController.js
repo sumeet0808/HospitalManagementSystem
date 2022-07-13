@@ -71,8 +71,8 @@ const getAllPatientPrescriptionForDoctor = async (req, res) => {
     {
       $lookup: {
         from: "doctors",
-        localField: "pid",
-        foreignField: "pid",
+        localField: "pId",
+        foreignField: "pId",
         as: "Prescription",
       },
     },
