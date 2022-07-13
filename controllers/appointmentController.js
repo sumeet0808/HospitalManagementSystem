@@ -8,7 +8,7 @@ const getAllAppointmentsForAdmin = async (req, res) => {
   const appointment = await Appointment.aggregate([
     {
       $project: {
-        _id: 0,
+        _id: 1,
         pId: 1,
         firstName: 1,
         lastName: 1,
