@@ -65,12 +65,12 @@ const getAllPatientPrescriptionForDoctor = async (req, res) => {
         lastName: 1,
         appDate: 1,
         appTime: 1,
-        _id: 0,
+        _id: 1,
       },
     },
     {
       $lookup: {
-        from: "doctors",
+        from: "prescribes",
         localField: "pId",
         foreignField: "pId",
         as: "Prescription",
