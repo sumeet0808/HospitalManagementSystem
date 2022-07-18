@@ -3,32 +3,20 @@ import { StatusCodes } from "http-status-codes";
 import Appointment from "../models/AppointmentModel.js";
 
 const createPrescription = async (req, res) => {
-  try {
-    const Prescription = await Prescribe.create({
-      disease: req.body.disease,
-      allergies: req.body.allergies,
-      prescription: req.body.prescription,
-      pId: req.params.pId,
-    });
-
-    res.status(StatusCodes.CREATED).json({
-      Prescription: {
-        disease: Prescription.disease,
-        allergies: Prescription.allergies,
-        prescription: Prescription.prescription,
-      },
-    });
-  } catch (error) {
-    if (error.message.indexOf("11000") != -1) {
-      res.status(StatusCodes.BAD_REQUEST).json({
-        msg: "Duplicate patient Id ",
-      });
-    }
-  }
+  const Prescription = await Prescribe.create({
+    disease: req.body.disease,
+    allergies: req.body.allergies,
+    prescription: req.body.prescription,
+    pId: req.params.pId,
+  });
+  res.status(StatusCodes.CREATED).json({
+    status: "success",
+    data: req.body,
+  });
 };
 
 const getAllPatientPrescriptionForAdmin = async (req, res) => {
-  const prescribe = await Appointment.aggregate([
+  const data = await Appointment.aggregate([
     {
       $project: {
         doctorName: 1,
@@ -50,9 +38,9 @@ const getAllPatientPrescriptionForAdmin = async (req, res) => {
     },
     { $unwind: "$Prescription" },
   ]);
-  res.status(200).json({
+  res.status(StatusCodes.OK).json({
     status: "success",
-    prescribe,
+    data,
   });
 };
 
@@ -70,16 +58,15 @@ const getAllPatientPrescriptionForDoctor = async (req, res) => {
     },
     {
       $lookup: {
-        from: "Prescribe",
+        from: "prescribes",
         localField: "pId",
         foreignField: "pId",
         as: "Prescription",
       },
     },
-    //{ $unwind: "$Prescription" },
+    { $unwind: "$Prescription" },
   ]);
-  console.log("data:::::::", data);
-  res.status(200).json({
+  res.status(StatusCodes.OK).json({
     status: "success",
     data,
   });

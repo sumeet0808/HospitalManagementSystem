@@ -8,20 +8,16 @@ import { BadRequestError, UnAuthenticatedError } from "../errors/index.js";
 
 const register = async (req, res) => {
   const { firstName, lastName, emailId, phoneNo, password, gender } = req.body;
-  console.log("============inside register");
   if (!firstName || !lastName || !emailId || !phoneNo || !password || !gender) {
     throw new BadRequestError("please provide all values");
   }
-  console.log("============inside3===============");
   const userAlreadyExists = await Patient.findOne({
     emailId,
   });
-  console.log("============inside4===============");
   if (userAlreadyExists) {
     throw new BadRequestError("Email already in use");
   }
-  console.log("============inside5===============");
-  const patient = await Patient.create({
+  const data = await Patient.create({
     firstName,
     lastName,
     emailId,
@@ -29,21 +25,20 @@ const register = async (req, res) => {
     password,
     gender,
   });
-  console.log("============inside6===============");
-  const token = patient.createJWT();
+  const token = data.createJWT();
 
   res.status(StatusCodes.CREATED).json({
-    patient: {
-      firstName: patient.firstName,
-      lastName: patient.lastName,
-      emailId: patient.emailId,
-      phoneNo: patient.phoneNo,
-      password: patient.password,
-      gender: patient.gender,
+    status: "success",
+    data: {
+      firstName: data.firstName,
+      lastName: data.lastName,
+      emailId: data.emailId,
+      phoneNo: data.phoneNo,
+      password: data.password,
+      gender: data.gender,
     },
     token,
   });
-  console.log("============inside7===============");
 };
 
 const patientLogin = async (req, res, next) => {
@@ -52,21 +47,21 @@ const patientLogin = async (req, res, next) => {
     if (!emailId || !password) {
       throw new BadRequestError("please provide all values");
     }
-    const patient = await Patient.findOne({
+    const data = await Patient.findOne({
       emailId,
     }).select("+password");
-    console.log("patient::::::", patient);
-    if (!patient) {
-      throw new UnAuthenticatedError("invalid cerdentials");
+    if (!data) {
+      throw new UnAuthenticatedError("invalid credentials");
     }
-    const isPasswordCorrect = await patient.comparePassword(password);
+    const isPasswordCorrect = await data.comparePassword(password);
     if (!isPasswordCorrect) {
       throw new UnAuthenticatedError("Invalid Credentials");
     }
-    const token = patient.createJWT();
-    patient.password = undefined;
+    const token = data.createJWT();
+    data.password = undefined;
     res.status(StatusCodes.OK).json({
-      patient,
+      status: "success",
+      data,
       token,
     });
   } catch (error) {
@@ -80,20 +75,21 @@ const doctorLogin = async (req, res, next) => {
     if (!emailId || !password) {
       throw new BadRequestError("please provide all values");
     }
-    const doctor = await Doctor.findOne({
+    const data = await Doctor.findOne({
       emailId,
     }).select("+password");
-    if (!doctor) {
+    if (!data) {
       throw new UnAuthenticatedError("invalid cerdentials");
     }
-    const isPasswordCorrect = await doctor.comparePassword(password);
+    const isPasswordCorrect = await data.comparePassword(password);
     if (!isPasswordCorrect) {
       throw new UnAuthenticatedError("Invalid Credentials");
     }
-    const token = doctor.createJWT();
-    doctor.password = undefined;
+    const token = data.createJWT();
+    data.password = undefined;
     res.status(StatusCodes.OK).json({
-      doctor,
+      status: "success",
+      data,
       token,
     });
   } catch (error) {
@@ -107,20 +103,20 @@ const adminLogin = async (req, res, next) => {
     if (!emailId || !password) {
       throw new BadRequestError("please provide all values");
     }
-    const admin = await Admin.findOne({
+    const data = await Admin.findOne({
       emailId,
     }).select("+password");
-    if (!admin) {
-      throw new UnAuthenticatedError("invalid cerdentials");
+    if (!data) {
+      throw new UnAuthenticatedError("invalid credentials");
     }
-    const isPasswordCorrect = await admin.comparePassword(password);
+    const isPasswordCorrect = await data.comparePassword(password);
     if (!isPasswordCorrect) {
       throw new UnAuthenticatedError("Invalid Credentials");
     }
-    const token = admin.createJWT();
-    admin.password = undefined;
+    const token = data.createJWT();
+    data.password = undefined;
     res.status(StatusCodes.OK).json({
-      admin,
+      data,
       token,
     });
   } catch (error) {
