@@ -19,6 +19,7 @@ function Login() {
       })
       .then(() => {
         alert("Patient Login Sucessfully!!!!!");
+        // eslint-disable-next-line no-restricted-globals
         navigate("/Patient");
       })
       .catch((error) => {
