@@ -22,7 +22,7 @@ function App() {
         <Route path="/Prescription" element={<Prescription />} />
         <Route path="/search" element={<Search />} />
         <Route path="/Patient" element={<Patient />} />
-        <Route path="/Adminpanel" element={<Adminpanel />} />
+        <Route path="/adminPanel" element={<Adminpanel />} />
       </Routes>
     </BrowserRouter>
   );

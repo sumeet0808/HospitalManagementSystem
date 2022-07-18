@@ -10,7 +10,7 @@ import {
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import config from "../../config";
-const Adminpanel = () => {
+function Adminpanel() {
   const [doctorName, setDoctorName] = useState("");
   const [specialization, setSpecialization] = useState("");
   const [emailId, setEmailId] = useState("");
@@ -814,5 +814,5 @@ const Adminpanel = () => {
       </div>
     </div>
   );
-};
+}
 export default Adminpanel;
