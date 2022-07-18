@@ -1,64 +1,82 @@
 import React, { useEffect, useState } from "react";
-import { appointmentByPatient } from "../../redux/patientAction";
+import { patientList } from "../../../redux/auth";
 import axios from "axios";
-import config from "../../config";
 import { useDispatch, useSelector } from "react-redux";
 import Header from "./Header";
-// import "react-datetime/css/react-datetime.css";
 import moment from "moment";
 
-const PatientDashboard = () => {
-  const data = [
-    { name: "General" },
-    { name: "Cardiologist" },
-    { name: "Pediatrician" },
-    { name: "Neurologist" },
-  ];
+const FinalPage = () => {
+  // const data = [
+  //   { name: "General" },
+  //   { name: "Cardiologist" },
+  //   { name: "Pediatrician" },
+  //   { name: "Neurologist" },
+  // ];
+
+  //////////////////////////SpecializationMockAPI///////////////////////////////
+
+  const [specialization, setSpecialization] = useState([]);
+  const [specializationid, setSpecializationid] = useState([]);
+
+  useEffect(() => {
+    const getSpecialization = async () => {
+      const resspecialization = await fetch(
+        "https://62cfc2761cc14f8c087cb329.mockapi.io/specialization"
+      );
+      const resspec = await resspecialization.json();
+      setSpecialization(await resspec);
+    };
+    getSpecialization();
+  }, []);
+
+  const handlespecialization = (event) => {
+    const getspecializationid = event.target.value;
+    setSpecializationid(getspecializationid);
+  };
+  //////////////////////////////////////////////////////////////////////
 
   //...................For Appointment History.............................
 
   const dispatch = useDispatch();
-  // const patients = useSelector((state) => state.auth.patientData);
   const docList = useSelector((state) => state.auth.doctorData);
 
   const [patients, setPatients] = useState([]);
 
   //..................For Booking Appointment.....................
 
-  const [specialization, setSpecialization] = useState("");
-  const [doctors, setDoctors] = useState("");
-  const [docFees, setDocFees] = useState("");
-  const [date, setDate] = useState("");
-  const [time, setTime] = useState("");
+  // const [specialization, setSpecialization] = useState("");
+  const [doctorName, setDoctorName] = useState("");
+  const [consultancyFees, setConsultancyFees] = useState("");
+  const [appDate, setDate] = useState("");
+  const [appTime, setTime] = useState("");
   // const [history, setHistory] = useState("");
   const [some, setSome] = useState("");
   const [getId, setGetId] = useState("");
+  const [allData, setallData] = useState([]);
+
   // const [doctorName, setDoctorName] = useState("");
   // const [currentStatus, setCurrentStatus] = useState("");
 
   ////////////////////////////////get doctor/////////////////////////////////////////
 
   const getDoctor = async () => {
-    const response = await axios.get(`${config.BASE_URL}doctor/getAllDoctors`);
+    const response = await axios.get(
+      `http://localhost:5000/api/v1/doctor/getAllDoctors`
+    );
     let doctorData = await response.data.doctor;
     setSome(doctorData);
-    //console.log("doctorData", doctorData);
     doctorData
       .filter((item) => {
-        return item.doctorName === doctors;
+        return item.doctorName === doctorName;
       })
-      .map(
-        ({ consultancyFees, _id }) => (
-          setDocFees(consultancyFees), setGetId(_id)
-        )
-      );
+      .map(({ consultancyFees }) => setConsultancyFees(consultancyFees));
   };
 
   useEffect(() => {
-    dispatch(appointmentByPatient());
+    // dispatch(patientList());
     // dispatch(getDoctor());
     getDoctor();
-  }, [doctors]);
+  }, [doctorName]);
 
   // const handleRowData = async () => {
   //   console.log("...........", getId);
@@ -71,23 +89,37 @@ const PatientDashboard = () => {
   //   setHistory(rowDataById);
   // };
 
-  const setAppointmentData = () => {
-    const response = axios.post(
-      `${config.BASE_URL}appointment/createAppointment`,
-      {
+  const setAppointmentData = async () => {
+    const response = await axios
+      .post(`http://localhost:5000/api/v1/appointment/createAppointment`, {
         specialization,
-        doctors,
-        docFees,
-        date,
-        time,
+        doctorName,
+        consultancyFees,
+        appDate,
+        appTime,
         currentStatus: "Active",
-      }
-    );
-    if (response.status === 200) {
-      console.log("created", response);
-    }
-    alert("Appointment Booked Successfully!!");
+        doctorStatus: "Active",
+        pId: "12345",
+        firstName: "jyo",
+        lastName: "patil",
+        gender: "female",
+        email: "jp@gmail.com",
+        contact: "1234567890",
+      })
+      .then((res) => {
+        if (res.status === 200) {
+          // console.log("created", res.data.appointment);
+          alert("Appointment Booked Successfully!!");
+        }
+        setallData(res.data);
+        setSpecialization("");
+        setDoctorName("");
+        setConsultancyFees("");
+        setDate("");
+        setTime("");
+      });
   };
+  const result = Object.keys(allData).map((key) => allData[key]);
 
   //..........................For Date............................................
   const disablePastDate = () => {
@@ -101,21 +133,13 @@ const PatientDashboard = () => {
 
   ///////////////////cancelAppointmentStatusByPatient///////////////////////
 
-  useEffect(() => {
-    axios
-      .get(`${config.BASE_URL}appointment/getAppointmentByPatientId/`)
-      .then((getData) => {
-        setPatients(getData.data);
-      });
-  }, []);
-
   const setData = (_id) => {
     localStorage.setItem("_id", _id);
   };
 
   const getData = () => {
     axios
-      .get(`${config.BASE_URL}appointment/getallappointments`)
+      .get(`http://localhost:5000/api/v1/appointment/getallappointments`)
       .then((getData) => {
         setPatients(getData.data);
       });
@@ -123,10 +147,13 @@ const PatientDashboard = () => {
 
   const onCancel = async (_id) => {
     await axios
-      .post(`${config.BASE_URL}appointment/cancelAppointmentStatusByPatient`, {
-        AppointmentId: _id,
-        currentStatus: "2",
-      })
+      .post(
+        `http://localhost:5000/api/v1/appointment/cancelAppointmentStatusByPatient`,
+        {
+          AppointmentId: _id,
+          currentStatus: "2",
+        }
+      )
       .then(() => {
         // console.log("szxdcgbhjm");
         getData();
@@ -182,16 +209,6 @@ const PatientDashboard = () => {
                   // onClick={() => handleRowData()}
                 >
                   Appointment History
-                </a>
-                <a
-                  class="list-group-item list-group-item-action"
-                  href="#list-pres"
-                  id="list-pres-list"
-                  role="tab"
-                  data-toggle="list"
-                  aria-controls="home"
-                >
-                  Prescriptions
                 </a>
               </div>
               <br />
@@ -261,33 +278,6 @@ const PatientDashboard = () => {
                         </div>
                       </div>
                     </div>
-
-                    <div
-                      class="col-sm-4"
-                      style={{ left: "20%", marginTop: "5%" }}
-                    >
-                      <div class="panel panel-white no-radius text-center">
-                        <div class="panel-body">
-                          <span class="fa-stack fa-2x">
-                            {" "}
-                            <i class="fa fa-square fa-stack-2x text-primary"></i>{" "}
-                            <i class="fa fa-list-ul fa-stack-1x fa-inverse"></i>{" "}
-                          </span>
-                          <h4 class="StepTitle" style={{ marginTop: "5%" }}>
-                            Prescriptions
-                          </h4>
-
-                          <p class="cl-effect-1">
-                            <a
-                              href="#list-pres"
-                              onclick="clickDiv('#list-pres-list')"
-                            >
-                              View Prescription List
-                            </a>
-                          </p>
-                        </div>
-                      </div>
-                    </div>
                   </div>
                 </div>
 
@@ -318,14 +308,25 @@ const PatientDashboard = () => {
                                 required="required"
                                 // value={specialization}
                                 onChange={(e) =>
-                                  setSpecialization(e.target.value)
+                                  // setSpecialization(e.target.value)
+                                  handlespecialization(e)
                                 }
                               >
                                 <option value="string" selected>
                                   Select Specialization
                                 </option>
-                                {data.map((d) => (
+
+                                {/* {data.map((d) => (
                                   <option> {d.name} </option>
+                                ))} */}
+
+                                {specialization.map((getspec, index) => (
+                                  <option
+                                    key={index}
+                                    value={getspec.specialization_id}
+                                  >
+                                    {getspec.specialization_name}
+                                  </option>
                                 ))}
                               </select>
                             </div>
@@ -340,7 +341,7 @@ const PatientDashboard = () => {
                                 class="form-control"
                                 id="doctor"
                                 required="required"
-                                onChange={(e) => setDoctors(e.target.value)}
+                                onChange={(e) => setDoctorName(e.target.value)}
                               >
                                 <option value="string" selected>
                                   Select Doctor
@@ -372,7 +373,7 @@ const PatientDashboard = () => {
                                 name="docFees"
                                 id="docFees"
                                 readonly="readonly"
-                                value={docFees}
+                                value={consultancyFees}
                                 // required="required"
                                 // onChange={(e) => setDocFees(e.target.value)}
                               />
@@ -392,7 +393,7 @@ const PatientDashboard = () => {
                                 required="required"
                                 min={disablePastDate()}
                                 onChange={(e) => setDate(e.target.value)}
-                                value={date}
+                                value={appDate}
                               />
                             </div>
                             <br />
@@ -407,7 +408,7 @@ const PatientDashboard = () => {
                                 class="form-control"
                                 id="apptime"
                                 required="required"
-                                value={time}
+                                value={appTime}
                                 onChange={(e) => setTime(e.target.value)}
                               >
                                 <option value="" disabled selected>
@@ -425,6 +426,8 @@ const PatientDashboard = () => {
 
                             <div class="col-md-4">
                               <button
+                                id="button"
+                                type="button"
                                 class="btn btn-primary"
                                 onClick={setAppointmentData}
                               >
@@ -459,15 +462,16 @@ const PatientDashboard = () => {
                     </thead>
 
                     <tbody>
-                      {patients &&
-                        patients.map((item, index) => {
+                      {result.length > 0 &&
+                        result.map((item, index) => {
                           return (
                             <tr key={index}>
-                              <td>{item.doctors}</td>
-                              <td>{item.docFees}</td>
-                              {/* <td>{item.date}</td> */}
-                              <td>{moment(item.date).format("YYYY-MM-DD")}</td>
-                              <td>{item.time}</td>
+                              <td>{item.doctorName}</td>
+                              <td>{item.consultancyFees}</td>
+                              <td>
+                                {moment(item.appDate).format("YYYY-MM-DD")}
+                              </td>
+                              <td>{item.appTime}</td>
                               <td>{item.currentStatus}</td>
                               <td>
                                 <a href=" ">
@@ -520,4 +524,4 @@ const PatientDashboard = () => {
   );
 };
 
-export default PatientDashboard;
+export default FinalPage;
