@@ -6,33 +6,34 @@ import moment from "moment";
 import { patientList } from "../../redux/patientAction";
 
 const Patient = () => {
-  // const data = [
-  //   { name: "General" },
-  //   { name: "Cardiologist" },
-  //   { name: "Pediatrician" },
-  //   { name: "Neurologist" },
-  // ];
+  const data = [
+    { name: "General" },
+    { name: "Cardiologist" },
+    { name: "Pediatrician" },
+    { name: "Neurologist" },
+  ];
 
   //////////////////////////SpecializationMockAPI///////////////////////////////
 
   const [specialization, setSpecialization] = useState([]);
   const [specializationid, setSpecializationid] = useState([]);
 
-  useEffect(() => {
-    const getSpecialization = async () => {
-      const resspecialization = await fetch(
-        "https://62cfc2761cc14f8c087cb329.mockapi.io/specialization"
-      );
-      const resspec = await resspecialization.json();
-      setSpecialization(await resspec);
-    };
-    getSpecialization();
-  }, []);
+  // useEffect(() => {
+  //   const getSpecialization = async () => {
+  //     const resspecialization = await fetch(
+  //       "https://62cfc2761cc14f8c087cb329.mockapi.io/specialization"
+  //     );
+  //     const resspec = await resspecialization.json();
+  //     setSpecialization(await resspec);
+  //   };
+  //   getSpecialization();
+  // }, []);
 
-  const handlespecialization = (event) => {
-    const getspecializationid = event.target.value;
-    setSpecializationid(getspecializationid);
-  };
+  // const handlespecialization = (event) => {
+  //   const getspecializationid = event.target.value;
+  //   setSpecializationid(getspecializationid);
+  // };
+
   //////////////////////////////////////////////////////////////////////
 
   //...................For Appointment History.............................
@@ -306,28 +307,28 @@ const Patient = () => {
                                 class="form-control"
                                 id="spec"
                                 required="required"
-                                // value={specialization}
-                                onChange={(e) =>
-                                  // setSpecialization(e.target.value)
-                                  handlespecialization(e)
+                                value={specialization}
+                                onChange={
+                                  (e) => setSpecialization(e.target.value)
+                                  // handlespecialization(e)
                                 }
                               >
                                 <option value="string" selected>
                                   Select Specialization
                                 </option>
 
-                                {/* {data.map((d) => (
+                                {data.map((d) => (
                                   <option> {d.name} </option>
-                                ))} */}
+                                ))}
 
-                                {specialization.map((getspec, index) => (
+                                {/* {specialization.map((getspec, index) => (
                                   <option
                                     key={index}
                                     value={getspec.specialization_id}
                                   >
                                     {getspec.specialization_name}
                                   </option>
-                                ))}
+                                ))} */}
                               </select>
                             </div>
                             <br />

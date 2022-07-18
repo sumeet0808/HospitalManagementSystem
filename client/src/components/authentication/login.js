@@ -20,7 +20,7 @@ function Login() {
       .then(() => {
         alert("Patient Login Sucessfully!!!!!");
         // eslint-disable-next-line no-restricted-globals
-        navigate("/PatientDashboard");
+        navigate("/Patient");
       })
       .catch((error) => {
         alert("Invalid Credentials");
