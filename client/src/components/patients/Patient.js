@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { patientList } from "../../../redux/auth";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import Header from "./Header";
 import moment from "moment";
+import { patientList } from "../../redux/patientAction";
 
-const FinalPage = () => {
+const Patient = () => {
   // const data = [
   //   { name: "General" },
   //   { name: "Cardiologist" },
@@ -524,4 +524,4 @@ const FinalPage = () => {
   );
 };
 
-export default FinalPage;
+export default Patient;

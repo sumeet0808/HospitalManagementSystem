@@ -1,2 +1,2 @@
-import PatientDashboard from "./PatientDashboard";
-export { PatientDashboard };
+import Patient from "./Patient";
+export { Patient };

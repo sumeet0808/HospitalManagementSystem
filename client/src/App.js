@@ -5,7 +5,7 @@ import Prescription from "./components/doctor/Prescription";
 import Search from "./components/doctor/Search";
 import Contact from "./components/authentication/contact";
 import About from "./components/authentication/about";
-import { PatientDashboard } from "./components/patients";
+import { Patient } from "./components/patients";
 import { Adminpanel } from "./components/admin";
 import Login from "./components/authentication/login";
 import Register from "./components/authentication/register";
@@ -21,7 +21,7 @@ function App() {
         <Route path="/Doctor" element={<Doctor />} />
         <Route path="/Prescription" element={<Prescription />} />
         <Route path="/search" element={<Search />} />
-        <Route path="/PatientDashboard" element={<PatientDashboard />} />
+        <Route path="/Patient" element={<Patient />} />
         <Route path="/Adminpanel" element={<Adminpanel />} />
       </Routes>
     </BrowserRouter>

@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-import config from "../config";
 
 const initialAuthState = { patientData: [], getUserData: [], doctorData: [] };
 // const initialAuthState = { patientData: [], appointmentData: [] };
@@ -27,23 +26,24 @@ const patientSlice = createSlice({
   },
 });
 
-export const appointmentByPatient = (_id) => {
-  console.log("dhvsbjcn");
+export const patientList = () => {
   return async (dispatch) => {
-    const getAppointmentList = async (_id) => {
+    const getPatientList = async () => {
       await axios
-        .get(`${config.BASE_URL}appointment/getAppointmentByPatientId/${_id}`)
+        .get(`http://localhost:5000/api/v1/appointment/getallappointments`)
         .then((getUser) => {
-          console.log("patient=====", getUser.data);
-          dispatch(authActions.getPatientData({ patientData: getUser.data }));
+          // console.log("patient=====", getUser.data);
+          dispatch(
+            patientActions.getPatientData({ patientData: getUser.data })
+          );
         });
     };
 
     try {
-      await getAppointmentList(_id);
+      await getPatientList();
     } catch (error) {
       dispatch(
-        authActions.dataNotFound({
+        patientActions.dataNotFound({
           message: "user data not found",
         })
       );
@@ -126,6 +126,6 @@ export const appointmentByPatient = (_id) => {
 //   getDoctor();
 // };
 
-export const authActions = patientSlice.actions;
+export const patientActions = patientSlice.actions;
 
 export default patientSlice;
