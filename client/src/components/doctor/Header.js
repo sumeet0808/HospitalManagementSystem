@@ -1,11 +1,20 @@
-import * as React from "react";
-
-// importing material UI components
-
+import React, { useState } from "react";
+import axios from "axios";
+import config from "../../config";
 const Header = () => {
+  const [apiData, setApiData] = useState([]);
+  const getData = (contact) => {
+    axios
+      .get(`${config.BASE_URL}getAllAppointment/${contact}`)
+      .then((getData) => {
+        setApiData(getData.data.data.appointments);
+      });
+
+    console.log(".........", apiData);
+  };
   return (
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
-      <a class="navbar-brand" href="#">
+      <a class="navbar-brand" href="/">
         <i class="fa fa-user-plus" aria-hidden="true"></i> Global Hospital{" "}
       </a>
       <button
@@ -23,32 +32,36 @@ const Header = () => {
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
           <li class="nav-item">
-            <a class="nav-link" href="1">
+            <a class="nav-link" href="/">
               <i class="fa fa-sign-out" aria-hidden="true"></i>Logout
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#"></a>
+            <a class="nav-link" href="/"></a>
           </li>
         </ul>
         <form
           class="form-inline my-2 my-lg-0"
-          method="post"
-          action="search.php"
+
+          // method="post"
+          // action="search.php"
         >
           <input
             class="form-control mr-sm-2"
             type="text"
             placeholder="Enter contact number"
             aria-label="Search"
-            name="contact"
+            // name="contact"
+            onChange={apiData}
           />
           <input
             type="submit"
+            href="Search"
             class="btn btn-outline-light"
             id="inputbtn"
-            name="search_submit"
-            value="Search"
+            // name="search_submit"
+            // value="Search"
+            onClick={getData}
           />
         </form>
       </div>

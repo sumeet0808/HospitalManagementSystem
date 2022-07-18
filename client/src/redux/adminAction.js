@@ -1,16 +1,17 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-
+import config from "../config";
 const initialAuthState = {
   doctorData: [],
   patientData: [],
+  patientByContact: [],
   appointment: [],
   prescribe: [],
   query: [],
   Doctor: [],
 };
-const authSlice = createSlice({
-  name: "auth",
+const adminSlice = createSlice({
+  name: "admin",
   initialState: initialAuthState,
   reducers: {
     getDoctorData(state, action) {
@@ -20,6 +21,10 @@ const authSlice = createSlice({
     getPatientData(state, action) {
       // console.log("getPatientData action...", state, action);
       state.patientData = action.payload.patientData;
+    },
+    getPatientByContact(state, action) {
+      // console.log("getPatientData action...", state, action);
+      state.patientByContact = action.payload.patientByContact;
     },
     getAppointmentData(state, action) {
       // console.log("getPatientData action...", state, action);
@@ -34,7 +39,14 @@ const authSlice = createSlice({
       state.query = action.payload.query;
     },
     addDoctorDetails(state, action) {
-      state.Doctor = state.Doctor.push(action.payload);
+      state.Doctor = {
+        doctorName: action.payload.doctorName,
+        specialization: action.payload.specialization,
+        emailId: action.payload.emailId,
+        password: action.payload.password,
+        confirmPassword: action.payload.confirmPassword,
+        consultancyFees: action.payload.consultancyFees,
+      };
     },
     dataNotFound(state, action) {
       state.notification = {
@@ -48,11 +60,11 @@ export const doctorList = () => {
   return async (dispatch) => {
     const getDoctorList = async () => {
       await axios
-        .get(`http://localhost:5000/api/v1/doctors`)
+        .get(`${config.BASE_URL}doctor/getAllDoctors`)
         .then((getUser) => {
-          // console.log("dat=====", authActions, getUser.data.doctor);
+          // console.log("dat=====", adminActions, getUser.data.doctor);
           dispatch(
-            authActions.getDoctorData({ doctorData: getUser.data.doctor })
+            adminActions.getDoctorData({ doctorData: getUser.data.doctor })
           );
         });
     };
@@ -60,7 +72,7 @@ export const doctorList = () => {
       await getDoctorList();
     } catch (error) {
       dispatch(
-        authActions.dataNotFound({
+        adminActions.dataNotFound({
           message: "user data not found",
         })
       );
@@ -72,11 +84,11 @@ export const patientList = () => {
   return async (dispatch) => {
     const getPatientList = async () => {
       await axios
-        .get(`http://localhost:5000/api/v1/patient`)
+        .get(`${config.BASE_URL}patient/getAllPatients`)
         .then((getUser) => {
-          // console.log("patient=====", authActions, getUser.data.patient);
+          // console.log("patient=====", adminActions, getUser.data.patient);
           dispatch(
-            authActions.getPatientData({ patientData: getUser.data.patient })
+            adminActions.getPatientData({ patientData: getUser.data.patient })
           );
         });
     };
@@ -84,7 +96,7 @@ export const patientList = () => {
       await getPatientList();
     } catch (error) {
       dispatch(
-        authActions.dataNotFound({
+        adminActions.dataNotFound({
           message: "user data not found",
         })
       );
@@ -96,12 +108,12 @@ export const appointmentList = () => {
   return async (dispatch) => {
     const getAppointmentList = async () => {
       await axios
-        .get(`http://localhost:5000/api/v1/appointment`)
+        .get(`${config.BASE_URL}appointment/getAllAppointmentsForAdmin`)
         .then((getUser) => {
-          // console.log("appointmnet=====", getUser.data.data.appointment);
+          // console.log("appointmnet=====", getUser.data);
           dispatch(
-            authActions.getAppointmentData({
-              appointment: getUser.data.data.appointment,
+            adminActions.getAppointmentData({
+              appointment: getUser.data.appointment,
             })
           );
         });
@@ -110,7 +122,7 @@ export const appointmentList = () => {
       await getAppointmentList();
     } catch (error) {
       dispatch(
-        authActions.dataNotFound({
+        adminActions.dataNotFound({
           message: "user data not found",
         })
       );
@@ -122,11 +134,11 @@ export const prescribeList = () => {
   return async (dispatch) => {
     const getPrescribeList = async () => {
       await axios
-        .get(`http://localhost:5000/api/v1/prescribe`)
+        .get(`${config.BASE_URL}prescribe/getAllPatientPrescriptionForAdmin`)
         .then((getUser) => {
-          // console.log("appointmnet=====", getUser.data.data.appointment);
+          console.log("appointmnet=====", getUser.data.data.appointment);
           dispatch(
-            authActions.getPrescribeData({
+            adminActions.getPrescribeData({
               prescribe: getUser.data.prescribe,
             })
           );
@@ -136,7 +148,7 @@ export const prescribeList = () => {
       await getPrescribeList();
     } catch (error) {
       dispatch(
-        authActions.dataNotFound({
+        adminActions.dataNotFound({
           message: "user data not found",
         })
       );
@@ -148,11 +160,11 @@ export const queryList = () => {
   return async (dispatch) => {
     const getQueryList = async () => {
       await axios
-        .get(`http://localhost:5000/api/v1/contact`)
+        .get(`${config.BASE_URL}contact/getAllQueries`)
         .then((getUser) => {
           // console.log("appointmnet=====", getUser.data.data.appointment);
           dispatch(
-            authActions.getQueryData({
+            adminActions.getQueryData({
               query: getUser.data.contacts,
             })
           );
@@ -162,7 +174,31 @@ export const queryList = () => {
       await getQueryList();
     } catch (error) {
       dispatch(
-        authActions.dataNotFound({
+        adminActions.dataNotFound({
+          message: "user data not found",
+        })
+      );
+    }
+  };
+};
+
+export const deleteDoctor = () => {
+  return async (dispatch) => {
+    const getPatientList = async (emailId) => {
+      await axios
+        .delete(`${config.BASE_URL}doctor/deleteDoctorByEmail/${emailId}`)
+        .then((getUser) => {
+          // console.log("dat=====", adminActions, getUser.data.doctor);
+          dispatch(
+            adminActions.getDoctorData({ doctorData: getUser.data.doctor })
+          );
+        });
+    };
+    try {
+      await getPatientList();
+    } catch (error) {
+      dispatch(
+        adminActions.dataNotFound({
           message: "user data not found",
         })
       );
@@ -172,26 +208,25 @@ export const queryList = () => {
 
 export const addDoctor = (data) => {
   return async (dispatch) => {
-    const postDoctor = async () => {
-      const response = await axios
-        .post("http://localhost:5000/api/v1/doctors", data)
+    const postDoctor = async (data) => {
+      await axios
+        .post(`${config.BASE_URL}doctor/createDoctor`, data)
         .then(() => {
-          console.log("appointmnet=====", response.data);
-          dispatch(authActions.addDoctorDetails({ Doctor: response }));
+          dispatch(adminActions.addDoctorDetails({ Doctor: data }));
         });
     };
     try {
-      await postDoctor();
+      await postDoctor(data);
     } catch (error) {
       dispatch(
-        authActions.dataNotFound({
+        adminActions.dataNotFound({
           message: "user data not found",
         })
       );
     }
   };
 };
-export const authActions = authSlice.actions;
-export default authSlice;
+export const adminActions = adminSlice.actions;
+export default adminSlice;
 //import these actions in your components where you need,
-//  example ===>>>   const exceuteActions = () => { dispatch(authActions.increment(pass the payload if needed))};
+//  example ===>>>   const exceuteActions = () => { dispatch(adminActions.increment(pass the payload if needed))};

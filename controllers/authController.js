@@ -8,16 +8,19 @@ import { BadRequestError, UnAuthenticatedError } from "../errors/index.js";
 
 const register = async (req, res) => {
   const { firstName, lastName, emailId, phoneNo, password, gender } = req.body;
-
+  console.log("============inside register");
   if (!firstName || !lastName || !emailId || !phoneNo || !password || !gender) {
     throw new BadRequestError("please provide all values");
   }
+  console.log("============inside3===============");
   const userAlreadyExists = await Patient.findOne({
     emailId,
   });
+  console.log("============inside4===============");
   if (userAlreadyExists) {
     throw new BadRequestError("Email already in use");
   }
+  console.log("============inside5===============");
   const patient = await Patient.create({
     firstName,
     lastName,
@@ -26,7 +29,7 @@ const register = async (req, res) => {
     password,
     gender,
   });
-
+  console.log("============inside6===============");
   const token = patient.createJWT();
 
   res.status(StatusCodes.CREATED).json({
@@ -40,6 +43,7 @@ const register = async (req, res) => {
     },
     token,
   });
+  console.log("============inside7===============");
 };
 
 const patientLogin = async (req, res, next) => {

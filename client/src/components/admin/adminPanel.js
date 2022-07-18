@@ -1,16 +1,15 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-
 import {
-  addDoctor,
   appointmentList,
   doctorList,
   patientList,
   prescribeList,
   queryList,
-} from "./redux/action";
+} from "../../redux/adminAction";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
+import config from "../../config";
 const Adminpanel = () => {
   const [doctorName, setDoctorName] = useState("");
   const [specialization, setSpecialization] = useState("");
@@ -18,56 +17,54 @@ const Adminpanel = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [consultancyFees, setConsultancy] = useState("");
-  const [posts, setPosts] = useState({});
-
   const dispatch = useDispatch();
-  const doctors = useSelector((state) => state.auth.doctorData);
-  const patients = useSelector((state) => state.auth.patientData);
-  const appointments = useSelector((state) => state.auth.appointment);
-  const prescribes = useSelector((state) => state.auth.prescribe);
-  const queries = useSelector((state) => state.auth.query);
-  //   const addDoctors = useSelector((state) => state.auth.Doctor);
+  const doctors = useSelector((state) => state.admin.doctorData);
+  const patients = useSelector((state) => state.admin.patientData);
+  const appointments = useSelector((state) => state.admin.appointment);
+  const prescribes = useSelector((state) => state.admin.prescribe);
+  const queries = useSelector((state) => state.admin.query);
 
-  console.log("----", prescribes);
   useEffect(() => {
     dispatch(doctorList());
     dispatch(patientList());
     dispatch(appointmentList());
     dispatch(prescribeList());
     dispatch(queryList());
-    // dispatch(addDoctor());
   }, []);
+
   const sendDataToAPI = () => {
-    axios.post(`http://localhost:5000/api/v1/doctors`, {
-      doctorName,
-      specialization,
-      emailId,
-      password,
-      confirmPassword,
-      consultancyFees,
-    });
+    axios
+      .post(`${config.BASE_URL}doctor/createDoctor`, {
+        doctorName,
+        specialization,
+        emailId,
+        password,
+        confirmPassword,
+        consultancyFees,
+      })
+      .then(() => {
+        dispatch(doctorList());
+      });
   };
 
   const onDelete = (emailId) => {
     axios
-      .delete(`http://localhost:5000/api/v1/doctors/${emailId}`)
-      .then((res) => {
-        console.log(res);
-        console.log("Delete-------", res.data);
-        doctors.filter((post) => {
-          return post.emailId !== emailId;
-        });
+      .delete(`${config.BASE_URL}doctor/deleteDoctorByEmail/${emailId}`)
+      .then(() => {
+        dispatch(doctorList());
       });
+    // console.log("Record Deleted Successfully");
+    // console.log(err.message);
   };
 
   return (
     <div>
-      <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
-        <a class="navbar-brand" href="#">
-          <i class="fa fa-user-plus" aria-hidden="true"></i> Global Hospital
+      <nav className="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
+        <a className="navbar-brand" href="/">
+          <i className="fa fa-user-plus" aria-hidden="true"></i> Global Hospital
         </a>
         <button
-          class="navbar-toggler"
+          className="navbar-toggler"
           type="button"
           data-toggle="collapse"
           data-target="#navbarSupportedContent"
@@ -75,28 +72,25 @@ const Adminpanel = () => {
           aria-expanded="false"
           aria-label="Toggle navigation"
         >
-          <span class="navbar-toggler-icon"></span>
+          <span className="navbar-toggler-icon"></span>
         </button>
 
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav mr-auto">
-            <li class="nav-item">
-              <a
-                class="nav-link"
-                //   href="logout1.php"
-              >
-                <i class="fa fa-sign-out" aria-hidden="true"></i>Logout
+        <div className="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul className="navbar-nav mr-auto">
+            <li className="nav-item">
+              <a className="nav-link" href="/Dashboard">
+                <i className="fa fa-sign-out" aria-hidden="true"></i>Logout
               </a>
             </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#"></a>
-            </li>
+            {/* <li className="nav-item">
+              <a className="nav-link" href="#"></a>
+            </li> */}
           </ul>
         </div>
       </nav>
 
       <div style={{ paddingTop: "50px" }}>
-        <div class="container-fluid" style={{ marginTop: "50px" }}>
+        <div className="container-fluid" style={{ marginTop: "50px" }}>
           <h3
             style={{
               marginLeft: "40%",
@@ -104,14 +98,18 @@ const Adminpanel = () => {
               fontFamily: "IBM Plex Sans, sans-serif",
             }}
           >
-            WELCOME RECEPTIONIST
+            WELCOME ADMIN
           </h3>
 
-          <div class="row">
-            <div class="col-md-4" style={{ maxWidth: "25%", marginTop: "3%" }}>
-              <div class="list-group" id="list-tab" role="tablist">
+          <div className="row">
+            <div
+              className="col-md-4"
+              style={{ maxWidth: "25%", marginTop: "3%" }}
+            >
+              {/* -------------------------------------------List----------------------------------------- */}
+              <div className="list-group" id="list-tab" role="tablist">
                 <a
-                  class="list-group-item list-group-item-action active"
+                  className="list-group-item list-group-item-action active"
                   id="list-dash-list"
                   data-toggle="list"
                   href="#list-dash"
@@ -121,28 +119,28 @@ const Adminpanel = () => {
                   Dashboard
                 </a>
                 <a
-                  class="list-group-item list-group-item-action"
+                  className="list-group-item list-group-item-action"
                   href="#list-doc"
                   id="list-doc-list"
                   role="tab"
-                  aria-controls="home"
                   data-toggle="list"
+                  aria-controls="home"
                 >
                   Doctor List
                 </a>
 
                 <a
-                  class="list-group-item list-group-item-action"
+                  className="list-group-item list-group-item-action"
                   href="#list-pat"
                   id="list-pat-list"
                   role="tab"
-                  data-toggle="list"
                   aria-controls="home"
+                  data-toggle="list"
                 >
                   Patient List
                 </a>
                 <a
-                  class="list-group-item list-group-item-action"
+                  className="list-group-item list-group-item-action"
                   href="#list-app"
                   id="list-app-list"
                   role="tab"
@@ -152,7 +150,7 @@ const Adminpanel = () => {
                   Appointment Details
                 </a>
                 <a
-                  class="list-group-item list-group-item-action"
+                  className="list-group-item list-group-item-action"
                   href="#list-pres"
                   id="list-pres-list"
                   role="tab"
@@ -162,19 +160,19 @@ const Adminpanel = () => {
                   Prescription List
                 </a>
                 <a
-                  class="list-group-item list-group-item-action"
+                  className="list-group-item list-group-item-action"
                   href="#list-settings"
                   id="list-adoc-list"
                   role="tab"
-                  data-toggle="list"
                   aria-controls="home"
+                  data-toggle="list"
                 >
                   Add Doctor
                 </a>
                 <a
-                  class="list-group-item list-group-item-action"
+                  className="list-group-item list-group-item-action"
                   href="#list-settings1"
-                  id="list-ddoc-list"
+                  id="list-d doc-list"
                   role="tab"
                   data-toggle="list"
                   aria-controls="home"
@@ -182,7 +180,7 @@ const Adminpanel = () => {
                   Delete Doctor
                 </a>
                 <a
-                  class="list-group-item list-group-item-action"
+                  className="list-group-item list-group-item-action"
                   href="#list-mes"
                   id="list-mes-list"
                   role="tab"
@@ -194,34 +192,39 @@ const Adminpanel = () => {
               </div>
               <br />
             </div>
-            <div class="col-md-8" style={{ marginTop: "3%" }}>
+            <div className="col-md-8" style={{ marginTop: "3%" }}>
               <div
-                class="tab-content"
+                className="tab-content"
                 id="nav-tabContent"
                 style={{ width: "950px" }}
               >
+                {/* ----------------------------------------------------------Dashboard---------------------------------------------------------- */}
+
                 <div
-                  class="tab-pane fade show active"
+                  className="tab-pane fade show active"
                   id="list-dash"
                   role="tabpanel"
                   aria-labelledby="list-dash-list"
                 >
-                  <div class="container-fluid container-fullw bg-white">
-                    <div class="row">
-                      <div class="col-sm-4">
-                        <div class="panel panel-white no-radius text-center">
-                          <div class="panel-body">
-                            <span class="fa-stack fa-2x">
-                              <i class="fa fa-square fa-stack-2x text-primary"></i>
-                              <i class="fa fa-users fa-stack-1x fa-inverse"></i>
+                  <div className="container-fluid container-full w bg-white">
+                    <div className="row">
+                      <div className="col-sm-4">
+                        <div className="panel panel-white no-radius text-center">
+                          <div className="panel-body">
+                            <span className="fa-stack fa-2x">
+                              <i className="fa fa-square fa-stack-2x text-primary"></i>
+                              <i className="fa fa-users fa-stack-1x fa-inverse"></i>
                             </span>
-                            <h4 class="StepTitle" style={{ marginTop: "5%" }}>
+                            <h4
+                              className="StepTitle"
+                              style={{ marginTop: "5%" }}
+                            >
                               Doctor List
                             </h4>
-                            <p class="links cl-effect-1">
+                            <p className="links cl-effect-1">
                               <a
                                 href="#list-doc"
-                                onclick="clickDiv('#list-doc-list')"
+                                // onclick="clickDiv('#list-doc-list')"
                               >
                                 View Doctors
                               </a>
@@ -230,21 +233,24 @@ const Adminpanel = () => {
                         </div>
                       </div>
 
-                      <div class="col-sm-4" style={{ left: "-3%" }}>
-                        <div class="panel panel-white no-radius text-center">
-                          <div class="panel-body">
-                            <span class="fa-stack fa-2x">
-                              <i class="fa fa-square fa-stack-2x text-primary"></i>
-                              <i class="fa fa-users fa-stack-1x fa-inverse"></i>
+                      <div className="col-sm-4" style={{ left: "-3%" }}>
+                        <div className="panel panel-white no-radius text-center">
+                          <div className="panel-body">
+                            <span className="fa-stack fa-2x">
+                              <i className="fa fa-square fa-stack-2x text-primary"></i>
+                              <i className="fa fa-users fa-stack-1x fa-inverse"></i>
                             </span>
-                            <h4 class="StepTitle" style={{ marginTop: "5%" }}>
+                            <h4
+                              className="StepTitle"
+                              style={{ marginTop: "5%" }}
+                            >
                               Patient List
                             </h4>
 
-                            <p class="cl-effect-1">
+                            <p className="cl-effect-1">
                               <a
                                 href="#app-hist"
-                                onclick="clickDiv('#list-pat-list')"
+                                // onclick="clickDiv('#list-pat-list')"
                               >
                                 View Patients
                               </a>
@@ -253,22 +259,24 @@ const Adminpanel = () => {
                         </div>
                       </div>
 
-                      <div class="col-sm-4">
-                        <div class="panel panel-white no-radius text-center">
-                          <div class="panel-body">
-                            <span class="fa-stack fa-2x">
-                              {" "}
-                              <i class="fa fa-square fa-stack-2x text-primary"></i>{" "}
-                              <i class="fa fa-paperclip fa-stack-1x fa-inverse"></i>{" "}
+                      <div className="col-sm-4">
+                        <div className="panel panel-white no-radius text-center">
+                          <div className="panel-body">
+                            <span className="fa-stack fa-2x">
+                              <i className="fa fa-square fa-stack-2x text-primary"></i>
+                              <i className="fa fa-paperclip fa-stack-1x fa-inverse"></i>
                             </span>
-                            <h4 class="StepTitle" style={{ marginTop: "5%" }}>
+                            <h4
+                              className="StepTitle"
+                              style={{ marginTop: "5%" }}
+                            >
                               Appointment Details
                             </h4>
 
-                            <p class="cl-effect-1">
+                            <p className="cl-effect-1">
                               <a
                                 href="#app-hist"
-                                onclick="clickDiv('#list-app-list')"
+                                // onclick="clickDiv('#list-app-list')"
                               >
                                 View Appointments
                               </a>
@@ -278,25 +286,28 @@ const Adminpanel = () => {
                       </div>
                     </div>
 
-                    <div class="row">
+                    <div className="row">
                       <div
-                        class="col-sm-4"
+                        className="col-sm-4"
                         style={{ left: " 13%", marginTop: "5%" }}
                       >
-                        <div class="panel panel-white no-radius text-center">
-                          <div class="panel-body">
-                            <span class="fa-stack fa-2x">
-                              <i class="fa fa-square fa-stack-2x text-primary"></i>
-                              <i class="fa fa-list-ul fa-stack-1x fa-inverse"></i>
+                        <div className="panel panel-white no-radius text-center">
+                          <div className="panel-body">
+                            <span className="fa-stack fa-2x">
+                              <i className="fa fa-square fa-stack-2x text-primary"></i>
+                              <i className="fa fa-list-ul fa-stack-1x fa-inverse"></i>
                             </span>
-                            <h4 class="StepTitle" style={{ marginTop: "5%" }}>
+                            <h4
+                              className="StepTitle"
+                              style={{ marginTop: "5%" }}
+                            >
                               Prescription List
                             </h4>
 
-                            <p class="cl-effect-1">
+                            <p className="cl-effect-1">
                               <a
                                 href="#list-pres"
-                                onclick="clickDiv('#list-pres-list')"
+                                // onclick="clickDiv('#list-pres-list')"
                               >
                                 View Prescriptions
                               </a>
@@ -306,23 +317,26 @@ const Adminpanel = () => {
                       </div>
 
                       <div
-                        class="col-sm-4"
+                        className="col-sm-4"
                         style={{ left: "18%", marginTop: "5%" }}
                       >
-                        <div class="panel panel-white no-radius text-center">
-                          <div class="panel-body">
-                            <span class="fa-stack fa-2x">
-                              <i class="fa fa-square fa-stack-2x text-primary"></i>
-                              <i class="fa fa-plus fa-stack-1x fa-inverse"></i>
+                        <div className="panel panel-white no-radius text-center">
+                          <div className="panel-body">
+                            <span className="fa-stack fa-2x">
+                              <i className="fa fa-square fa-stack-2x text-primary"></i>
+                              <i className="fa fa-plus fa-stack-1x fa-inverse"></i>
                             </span>
-                            <h4 class="StepTitle" style={{ marginTop: "5%" }}>
+                            <h4
+                              className="StepTitle"
+                              style={{ marginTop: "5%" }}
+                            >
                               Manage Doctors
                             </h4>
 
-                            <p class="cl-effect-1">
+                            <p className="cl-effect-1">
                               <a
-                                href="#app-hist"
-                                onclick="clickDiv('#list-adoc-list')"
+                                href=""
+                                // onclick="clickDiv('#list-adoc-list')"
                               >
                                 Add Doctors
                               </a>
@@ -330,7 +344,7 @@ const Adminpanel = () => {
                               <span> | </span>
                               <a
                                 href="#app-hist"
-                                onclick="clickDiv('#list-ddoc-list')"
+                                // onclick="clickDiv('#list-ddoc-list')"
                               >
                                 Delete Doctors
                               </a>
@@ -342,40 +356,41 @@ const Adminpanel = () => {
                   </div>
                 </div>
 
+                {/* --------------------------------------Doctor List--------------------------------------------- */}
+
                 <div
-                  class="tab-pane fade"
+                  className="tab-pane fade"
                   id="list-doc"
                   role="tabpanel"
                   aria-labelledby="list-home-list"
                 >
-                  <div class="col-md-8">
-                    <form
-                      class="form-group"
-                      //   action="doctorsearch.php"
-                      method="post"
-                    >
-                      <div class="row">
-                        <div class="col-md-10">
+                  <div className="col-md-8">
+                    <form className="form-group">
+                      <div className="row">
+                        <div className="col-md-10">
                           <input
+                            // value={contact}
+                            // onChange={(e) => setContact(e.target.value)}
+                            required
                             type="text"
                             name="doctor_contact"
-                            placeholder="Enter Email ID"
-                            class="form-control"
+                            placeholder="Enter Contact"
+                            className="form-control"
                           />
                         </div>
-                        <div class="col-md-2">
-                          <input
-                            type="submit"
-                            name="doctor_search_submit"
-                            class="btn btn-primary"
-                            value="Search"
-                          />
+                        <div className="col-md-2">
+                          <button
+                            type="search"
+                            className="btn btn-primary"
+                            // onClick={getDataByID(contact)}
+                          >
+                            Search
+                          </button>
                         </div>
                       </div>
                     </form>
                   </div>
-                  {/* Doctor List */}
-                  <table class="table table-hover">
+                  <table className="table table-hover">
                     <thead>
                       <tr>
                         <th scope="col">Doctor Name</th>
@@ -385,6 +400,7 @@ const Adminpanel = () => {
                         <th scope="col">Fees</th>
                       </tr>
                     </thead>
+
                     <tbody>
                       {doctors.map((doctor) => {
                         return (
@@ -402,36 +418,40 @@ const Adminpanel = () => {
                   <br />
                 </div>
 
+                {/* --------------------------------------Patient List--------------------------------------------- */}
+
                 <div
-                  class="tab-pane fade"
+                  className="tab-pane fade"
                   id="list-pat"
                   role="tabpanel"
                   aria-labelledby="list-pat-list"
                 >
-                  <div class="col-md-8">
-                    <form class="form-group" method="post">
-                      <div class="row">
-                        <div class="col-md-10">
+                  <div className="col-md-8">
+                    <form className="form-group">
+                      <div className="row">
+                        <div className="col-md-10">
                           <input
+                            // value={contact}
+                            // onChange={(e) => setContact(e.target.value)}
                             type="text"
-                            name="patient_contact"
                             placeholder="Enter Contact"
-                            class="form-control"
+                            className="form-control"
                           />
                         </div>
-                        <div class="col-md-2">
-                          <input
-                            type="submit"
-                            name="patient_search_submit"
-                            class="btn btn-primary"
-                            value="Search"
-                          />
+                        <div className="col-md-2">
+                          <button
+                            type="search"
+                            className="btn btn-primary"
+                            // onClick={getDataByID(contact)}
+                          >
+                            Search
+                          </button>
                         </div>
                       </div>
                     </form>
                   </div>
                   {/* Patient Table */}
-                  <table class="table table-hover">
+                  <table className="table table-hover">
                     <thead>
                       <tr>
                         <th scope="col">Patient ID</th>
@@ -462,83 +482,32 @@ const Adminpanel = () => {
                   <br />
                 </div>
 
+                {/* --------------------------------------Appoinment List--------------------------------------------- */}
                 <div
-                  class="tab-pane fade"
-                  id="list-pres"
-                  role="tabpanel"
-                  aria-labelledby="list-pres-list"
-                >
-                  <div class="col-md-8">
-                    <div class="row">
-                      <table class="table table-hover">
-                        <thead>
-                          <tr>
-                            <th scope="col">Doctor</th>
-                            <th scope="col">Patient ID</th>
-                            <th scope="col">Appointment ID</th>
-                            <th scope="col">First Name</th>
-                            <th scope="col">Last Name</th>
-                            <th scope="col">Appointment Date</th>
-                            <th scope="col">Appointment Time</th>
-                            <th scope="col">Disease</th>
-                            <th scope="col">Allergy</th>
-                            <th scope="col">Prescription</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {prescribes.map((prescribe) => {
-                            return (
-                              <tr>
-                                <td>{prescribe.doctorName}</td>
-                                <td>{prescribe.pid}</td>
-                                <td>{prescribe.ID}</td>
-                                <td>{prescribe.fname}</td>
-                                <td>{prescribe.lname}</td>
-                                <td>{prescribe.appdate}</td>
-                                <td>{prescribe.apptime}</td>
-                                <td>{prescribe.Prescription.Disease}</td>
-                                <td>{prescribe.Prescription.Allergies}</td>
-                                <td>{prescribe.Prescription.Prescription}</td>
-                              </tr>
-                            );
-                          })}
-                        </tbody>
-                      </table>
-                      <br />
-                    </div>
-                  </div>
-                </div>
-
-                <div
-                  class="tab-pane fade"
+                  className="tab-pane fade"
                   id="list-app"
                   role="tabpanel"
                   aria-labelledby="list-pat-list"
                 >
-                  <div class="col-md-8">
-                    <form class="form-group" method="post">
-                      <div class="row">
-                        <div class="col-md-10">
+                  <div className="col-md-8">
+                    <form className="form-group">
+                      <div className="row">
+                        <div className="col-md-10">
                           <input
                             type="text"
                             name="app_contact"
                             placeholder="Enter Contact"
-                            class="form-control"
+                            className="form-control"
                           />
                         </div>
-                        <div class="col-md-2">
-                          <input
-                            type="submit"
-                            name="app_search_submit"
-                            class="btn btn-primary"
-                            value="Search"
-                          />
+                        <div className="col-md-2">
+                          <button className="btn btn-primary">Search</button>
                         </div>
                       </div>
                     </form>
                   </div>
 
-                  <table class="table table-hover">
+                  <table className="table table-hover">
                     <thead>
                       <tr>
                         <th scope="col">Appointment ID</th>
@@ -560,19 +529,19 @@ const Adminpanel = () => {
                         appointments.map((appointment) => {
                           return (
                             <tr>
-                              <td>{appointment.ID}</td>
-                              <td>{appointment.pid}</td>
-                              <td>{appointment.fname}</td>
-                              <td>{appointment.lname}</td>
+                              <td>{appointment._id}</td>
+                              <td>{appointment.pId}</td>
+                              <td>{appointment.firstName}</td>
+                              <td>{appointment.lastName}</td>
 
                               <td>{appointment.gender}</td>
                               <td>{appointment.email}</td>
                               <td>{appointment.contact}</td>
                               <td>{appointment.doctorName}</td>
 
-                              <td>{appointment.docFees}</td>
-                              <td>{appointment.appdate}</td>
-                              <td>{appointment.apptime}</td>
+                              <td>{appointment.consultancyFees}</td>
+                              <td>{appointment.appDate}</td>
+                              <td>{appointment.appTime}</td>
                               <td>{appointment.currentStatus}</td>
                             </tr>
                           );
@@ -582,53 +551,95 @@ const Adminpanel = () => {
                   <br />
                 </div>
 
+                {/* --------------------------------------Prescription List--------------------------------------------- */}
+
                 <div
-                  class="tab-pane fade"
+                  className="tab-pane fade"
+                  id="list-pres"
+                  role="tabpanel"
+                  aria-labelledby="list-pres-list"
+                >
+                  <div className="col-md-8">
+                    <div className="row">
+                      <table className="table table-hover">
+                        <thead>
+                          <tr>
+                            <th scope="col">Doctor</th>
+                            <th scope="col">Patient ID</th>
+                            <th scope="col">Appointment ID</th>
+                            <th scope="col">First Name</th>
+                            <th scope="col">Last Name</th>
+                            <th scope="col">Appointment Date</th>
+                            <th scope="col">Appointment Time</th>
+                            {/* <th scope="col">Disease</th>
+                            <th scope="col">Allergy</th>
+                            <th scope="col">Prescription</th> */}
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {prescribes.map((prescribe) => {
+                            return (
+                              <tr>
+                                <td>{prescribe.Prescription.doctorName}</td>
+                                <td>{prescribe.pId}</td>
+                                <td>{prescribe._id}</td>
+                                <td>{prescribe.firstName}</td>
+                                <td>{prescribe.lastName}</td>
+                                <td>{prescribe.appDate}</td>
+                                <td>{prescribe.appTime}</td>
+                                {/* <td>{prescribe.Prescription.Disease}</td>
+                                <td>{prescribe.Prescription.Allergies}</td>
+                                <td>{prescribe.Prescription.Prescription}</td> */}
+                              </tr>
+                            );
+                          })}
+                        </tbody>
+                      </table>
+                      <br />
+                    </div>
+                  </div>
+                </div>
+
+                {/* --------------------------------------Add Doctor--------------------------------------------- */}
+
+                <div
+                  className="tab-pane fade"
                   id="list-messages"
                   role="tabpanel"
                   aria-labelledby="list-messages-list"
                 ></div>
-
                 <div
-                  class="tab-pane fade"
+                  className="tab-pane fade"
                   id="list-settings"
                   role="tabpanel"
                   aria-labelledby="list-settings-list"
                 >
-                  <form class="form-group" method="post">
-                    <div class="row">
-                      <div class="col-md-4">
+                  <form className="form-group">
+                    <div className="row">
+                      <div className="col-md-4">
                         <label>Doctor Name:</label>
                       </div>
-                      <div class="col-md-8">
+                      <div className="col-md-8">
                         <input
                           onChange={(e) => setDoctorName(e.target.value)}
                           type="text"
-                          class="form-control"
-                          name="doctorName"
-                          onkeydown="return alphaOnly(event);"
+                          className="form-control"
                           required
                         />
                       </div>
                       <br />
                       <br />
-                      <div class="col-md-4">
+                      <div className="col-md-4">
                         <label>Specialization:</label>
                       </div>
-                      <div class="col-md-8">
+                      <div className="col-md-8">
                         <select
                           onChange={(e) => setSpecialization(e.target.value)}
-                          name="specialization"
-                          class="form-control"
+                          className="form-control"
                           id="special"
                           required="required"
                         >
-                          <option
-                            value="head"
-                            name="specialization"
-                            disabled
-                            selected
-                          >
+                          <option value="head" disabled selected>
                             Select Specialization
                           </option>
                           <option value="General" name="specialization">
@@ -647,159 +658,132 @@ const Adminpanel = () => {
                       </div>
                       <br />
                       <br />
-                      <div class="col-md-4">
+                      <div className="col-md-4">
                         <label>Email ID:</label>
                       </div>
-                      <div class="col-md-8">
+                      <div className="col-md-8">
                         <input
                           onChange={(e) => setEmailId(e.target.value)}
                           type="email"
-                          class="form-control"
-                          name="emailId"
+                          className="form-control"
                           required
                         />
                       </div>
                       <br />
                       <br />
-                      <div class="col-md-4">
+                      <div className="col-md-4">
                         <label>Password:</label>
                       </div>
-                      <div class="col-md-8">
+                      <div className="col-md-8">
                         <input
                           onChange={(e) => setPassword(e.target.value)}
                           type="password"
-                          class="form-control"
-                          name="password"
+                          className="form-control"
                           id="dpassword"
                           required
                         />
                       </div>
                       <br />
                       <br />
-                      <div class="col-md-4">
+                      <div className="col-md-4">
                         <label>Confirm Password:</label>
                       </div>
-                      <div class="col-md-8" id="cpass">
+                      <div className="col-md-8" id="cpass">
                         <input
                           onChange={(e) => setConfirmPassword(e.target.value)}
                           type="password"
-                          class="form-control"
-                          onkeyup="check();"
-                          name="confirmPassword"
+                          className="form-control"
                           id="cdpassword"
                           required
                         />
-                        <span id="message"></span>{" "}
+                        <span id="message"></span>
                       </div>
                       <br />
                       <br />
 
-                      <div class="col-md-4">
+                      <div className="col-md-4">
                         <label>Consultancy Fees:</label>
                       </div>
-                      <div class="col-md-8">
+                      <div className="col-md-8">
                         <input
                           onChange={(e) => setConsultancy(e.target.value)}
                           type="text"
-                          class="form-control"
-                          name="consultancyFees"
+                          className="form-control"
                           required
                         />
                       </div>
                       <br />
                       <br />
                     </div>
-                    <input
+                    <button
                       type="submit"
-                      name="docsub"
-                      value="Add Doctor"
-                      class="btn btn-primary"
+                      className="btn btn-primary"
                       onClick={sendDataToAPI}
-                    />
+                    >
+                      Add Doctor
+                    </button>
                   </form>
                 </div>
+                {/* --------------------------------------Delete Doctor--------------------------------------------- */}
 
                 <div
-                  class="tab-pane fade"
+                  className="tab-pane fade"
                   id="list-settings1"
                   role="tabpanel"
                   aria-labelledby="list-settings1-list"
                 >
-                  <form class="form-group" method="post">
-                    {/* {doctors.length &&
-                      doctors.map((doctor) => {
-                        return (
-                          <> */}
-                    <div class="row">
-                      <div class="col-md-4">
+                  <form className="form-group">
+                    <div className="row">
+                      <div className="col-md-4">
                         <label>Email ID:</label>
                       </div>
-                      <div class="col-md-8">
+                      <div className="col-md-8">
                         <input
+                          onChange={(e) => setEmailId(e.target.value)}
                           type="email"
-                          class="form-control"
-                          name="emailId"
+                          className="form-control"
                           required
                         />
                       </div>
                       <br />
                       <br />
                     </div>
-                    <input
-                      type="submit"
-                      name="docsub1"
-                      value="Delete Doctor"
-                      class="btn btn-primary"
-                      onClick={onDelete(emailId)}
-                    />
-                    {/* </> */}
-                    {/* // ); // })} */}
+                    <button
+                      className="btn btn-primary"
+                      onClick={() => onDelete(emailId)}
+                    >
+                      Delete Doctor
+                    </button>
                   </form>
                 </div>
 
-                <div
-                  class="tab-pane fade"
-                  id="list-attend"
-                  role="tabpanel"
-                  aria-labelledby="list-attend-list"
-                >
-                  ...
-                </div>
+                {/* --------------------------------------Queries--------------------------------------------- */}
 
                 <div
-                  class="tab-pane fade"
+                  className="tab-pane fade"
                   id="list-mes"
                   role="tabpanel"
                   aria-labelledby="list-mes-list"
                 >
-                  <div class="col-md-8">
-                    <form
-                      class="form-group"
-                      //   action="messearch.php"
-                      method="post"
-                    >
-                      <div class="row">
-                        <div class="col-md-10">
+                  <div className="col-md-8">
+                    <form className="form-group">
+                      <div className="row">
+                        <div className="col-md-10">
                           <input
                             type="text"
                             name="mes_contact"
                             placeholder="Enter Contact"
-                            class="form-control"
+                            className="form-control"
                           />
                         </div>
-                        <div class="col-md-2">
-                          <input
-                            type="submit"
-                            name="mes_search_submit"
-                            class="btn btn-primary"
-                            value="Search"
-                          />
+                        <div className="col-md-2">
+                          <button className="btn btn-primary">Search</button>
                         </div>
                       </div>
                     </form>
                   </div>
 
-                  <table class="table table-hover">
+                  <table className="table table-hover">
                     <thead>
                       <tr>
                         <th scope="col">User Name</th>
