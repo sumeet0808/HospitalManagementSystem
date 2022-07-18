@@ -37,7 +37,7 @@ const getAllPatientPrescriptionForAdmin = async (req, res) => {
         lastName: 1,
         appDate: 1,
         appTime: 1,
-        _id: 1,
+        _id: 0,
       },
     },
     {
@@ -65,19 +65,20 @@ const getAllPatientPrescriptionForDoctor = async (req, res) => {
         lastName: 1,
         appDate: 1,
         appTime: 1,
-        _id: 1,
+        _id: 0,
       },
     },
     {
-      $lookup: {
-        from: "prescribes",
+      $lookup{
+        from: "Prescribe",
         localField: "pId",
         foreignField: "pId",
         as: "Prescription",
       },
     },
-    { $unwind: "$Prescription" },
+    //{ $unwind: "$Prescription" },
   ]);
+  console.log("data:::::::",data)
   res.status(200).json({
     status: "success",
     data,

@@ -1,33 +1,32 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
-import config from "../../config";
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+
 
 function Prescription() {
-  const [Disease, setDisease] = useState("");
-  const [Allergies, setAllergies] = useState("");
-  const [Prescription, setPrescription] = useState("");
 
-  const [pid, setPID] = useState(null);
+  const [disease, setDisease] = useState('');
+  const [allergies, setAllergies] = useState('');
+  const [prescription, setPrescription] = useState('');
+
+  const [pId, setPID] = useState(null);
   const sendDataToAPI = () => {
-    axios
-      .post(`${config.BASE_URL}prescribe/createPrescription/${pid}`, {
-        Disease,
-        Allergies,
-        Prescription,
+      axios.post(`http://localhost:5000/prescribe/createPrescription/${pId}`, {
+        disease,
+    allergies,
+    prescription          
+      // }).then(() => {
+      //     // eslint-disable-next-line no-restricted-globals
+      //     history.push('/')
       })
-      .then(() => {
-        // eslint-disable-next-line no-restricted-globals
-        history.push("/");
-      });
-  };
+  }
 
   useEffect(() => {
-    setDisease(localStorage.getItem("disease"));
-    setAllergies(localStorage.getItem("allergies"));
-    setPrescription(localStorage.getItem("prescription"));
+      setDisease(localStorage.getItem('disease'));
+      setAllergies(localStorage.getItem('allergies'));
+      setPrescription(localStorage.getItem('prescription'));
 
-    setPID(localStorage.getItem("PID"));
-  }, []);
+      setPID(localStorage.getItem('PId'))
+  }, [])
 
   return (
     <div>
@@ -55,7 +54,7 @@ function Prescription() {
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="/">
+              <a class="nav-link" href="/Doctor">
                 <i class="fa fa-sign-out" aria-hidden="true"></i>Back
               </a>
             </li>
@@ -63,8 +62,13 @@ function Prescription() {
         </div>
       </nav>
 
-      <div style={{ paddingTop: "50px" }}>
-        <div class="container-fluid" style={{ marginTop: "50px" }}>
+      <div
+        style={{ paddingTop: "50px" }}
+      >
+        <div
+          class="container-fluid"
+          style={{ marginTop: "50px" }}
+        >
           <h3
             style={{
               marginLeft: "40%",
@@ -100,7 +104,7 @@ function Prescription() {
                     rows="5"
                     name="disease"
                     required
-                    value={Disease}
+                    value={disease}
                     onChange={(e) => setDisease(e.target.value)}
                   ></textarea>
                 </div>
@@ -118,7 +122,7 @@ function Prescription() {
                     rows="5"
                     name="allergy"
                     required
-                    value={Allergies}
+                    value={allergies}
                     onChange={(e) => setAllergies(e.target.value)}
                   ></textarea>
                 </div>
@@ -135,7 +139,7 @@ function Prescription() {
                     rows="10"
                     name="prescription"
                     required
-                    value={Prescription}
+                    value={prescription}
                     onChange={(e) => setPrescription(e.target.value)}
                   ></textarea>
                 </div>
