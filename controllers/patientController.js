@@ -1,7 +1,6 @@
-import Patient from "../models/PatientModel.js";
-import { StatusCodes } from "http-status-codes";
-import { NotFoundError } from "../errors/index.js";
-
+import Patient from '../models/PatientModel.js';
+import { StatusCodes } from 'http-status-codes';
+import { NotFoundError } from '../errors/index.js';
 
 const getAllPatients = async (req, res) => {
   const patient = await Patient.aggregate([
@@ -17,7 +16,7 @@ const getAllPatients = async (req, res) => {
       },
     },
   ]);
-  res.status(StatusCodes.OK).json({ status: "success", patient });
+  res.status(StatusCodes.OK).json({ status: 'success', patient });
 };
 
 const getPatientByContact = async (req, res) => {
@@ -27,7 +26,7 @@ const getPatientByContact = async (req, res) => {
     throw new NotFoundError(`No patient with id :${patientContact}`);
   }
   res.status(StatusCodes.OK).json({
-    status: "Success",
+    status: 'Success',
     patient,
   });
 };
@@ -35,10 +34,10 @@ const getPatientByContact = async (req, res) => {
 const verifyPatientByEmail = async (req, res) => {
   const { emailId: patientEmail } = req.params;
   const patient = await Patient.findOne({ emailId: patientEmail });
-   if (!patient) {
-     throw new NotFoundError(`No patient with id :${patientContact}`);
-   }
-  res.status(StatusCodes.OK).json({ status: "Success", patient });
+  if (!patient) {
+    throw new NotFoundError(`No patient with id :${patientContact}`);
+  }
+  res.status(StatusCodes.OK).json({ status: 'Success', patient });
 };
 
 export { getAllPatients, getPatientByContact, verifyPatientByEmail };

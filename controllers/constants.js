@@ -5,3 +5,27 @@ export const currentStatus = {
   CancelledByPatient: 3,
   PrescriptionDone: 4,
 };
+
+export const ErrorStatus = {
+  invalidCrdentials: 'Invalid Credentials',
+  pleaseProvideAllValues: 'please provide all values',
+  authenticationInvalid: 'Authentication Invalid',
+  pleaseEnterFirstName: 'Please enter First name',
+  pleaseProvideLastName: 'Please Provide Last Name',
+  pleaseEnterEmail: 'Please enter email',
+  pleaseProvideContact: 'Please Provide Contact',
+  pleaseProvideValidEmail: 'Please Provide Valid Email',
+  pleaseEnterPassword: 'Please enter password',
+  pleaseConfirmPassword: 'Please confirm password',
+  passwordsAreNotTheSame: 'Passwords are not the same!',
+  pleaseProvideGender: 'Please Provide Gender',
+  pleaseProvideDoctorFees: 'Please Provide Doctor Fees',
+  pleaseProvideDoctorName: 'Please Provide Doctor Name',
+  enterAppointmentDate: 'Enter a appointment date !',
+  enterAppointmentTime: 'Enter a appointment time !',
+  enterDisease: 'Enter a disease !',
+  enterAllergies: 'Enter a Allergies !',
+  enterPrescription: 'Enter a Prescription !',
+  enterPid: 'Enter a pid !',
+  emailAlreadyInUse: 'Email already in use',
+};

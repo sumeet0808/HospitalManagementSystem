@@ -1,6 +1,6 @@
-import Prescribe from "../models/PrescribeModel.js";
-import { StatusCodes } from "http-status-codes";
-import Appointment from "../models/AppointmentModel.js";
+import Prescribe from '../models/PrescribeModel.js';
+import { StatusCodes } from 'http-status-codes';
+import Appointment from '../models/AppointmentModel.js';
 
 const createPrescription = async (req, res) => {
   try {
@@ -19,14 +19,13 @@ const createPrescription = async (req, res) => {
       },
     });
   } catch (error) {
-    if (error.message.indexOf("11000") != -1) {
+    if (error.message.indexOf('11000') != -1) {
       res.status(StatusCodes.BAD_REQUEST).json({
-        msg: "Duplicate patient Id ",
+        msg: 'Duplicate patient Id ',
       });
     }
   }
 };
-
 const getAllPatientPrescriptionForAdmin = async (req, res) => {
   const prescribe = await Appointment.aggregate([
     {
@@ -42,16 +41,16 @@ const getAllPatientPrescriptionForAdmin = async (req, res) => {
     },
     {
       $lookup: {
-        from: "prescribes",
-        localField: "pId",
-        foreignField: "pId",
-        as: "Prescription",
+        from: 'prescribes',
+        localField: 'pId',
+        foreignField: 'pId',
+        as: 'Prescription',
       },
     },
-    { $unwind: "$Prescription" },
+    { $unwind: '$Prescription' },
   ]);
   res.status(200).json({
-    status: "success",
+    status: 'success',
     prescribe,
   });
 };
@@ -70,17 +69,17 @@ const getAllPatientPrescriptionForDoctor = async (req, res) => {
     },
     {
       $lookup: {
-        from: "Prescribe",
-        localField: "pId",
-        foreignField: "pId",
-        as: "Prescription",
+        from: 'Prescribe',
+        localField: 'pId',
+        foreignField: 'pId',
+        as: 'Prescription',
       },
     },
     //{ $unwind: "$Prescription" },
   ]);
-  console.log("data:::::::", data);
+  console.log('data:::::::', data);
   res.status(200).json({
-    status: "success",
+    status: 'success',
     data,
   });
 };

@@ -1,20 +1,21 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
+import { ErrorStatus } from '../controllers/constants.js';
 const PrescribeSchema = new mongoose.Schema({
   disease: {
     type: String,
-    required: [true, "Enter a disease !"],
+    required: [true, ErrorStatus.enterDisease],
   },
   allergies: {
     type: String,
-    required: [true, "Enter a Allergies !"],
+    required: [true, ErrorStatus.enterAllergies],
   },
   prescription: {
     type: String,
-    required: [true, "Enter a Prescription !"],
+    required: [true, ErrorStatus.enterPrescription],
   },
   pId: {
     type: String,
-    required: [true, "Enter a pid !"],
+    required: [true, ErrorStatus.enterPid],
   },
 });
-export default mongoose.model("Prescribe", PrescribeSchema);
+export default mongoose.model('Prescribe', PrescribeSchema);

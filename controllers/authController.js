@@ -1,26 +1,26 @@
-import { promisify } from "util";
-import jwt from "jsonwebtoken";
-import Patient from "../models/PatientModel.js";
-import Doctor from "../models/DoctorModel.js";
-import Admin from "../models/AdminModel.js";
-import { StatusCodes } from "http-status-codes";
-import { BadRequestError, UnAuthenticatedError } from "../errors/index.js";
-
+import { promisify } from 'util';
+import jwt from 'jsonwebtoken';
+import Patient from '../models/PatientModel.js';
+import Doctor from '../models/DoctorModel.js';
+import Admin from '../models/AdminModel.js';
+import { StatusCodes } from 'http-status-codes';
+import { BadRequestError, UnAuthenticatedError } from '../errors/index.js';
+import { ErrorStatus } from './constants.js';
 const register = async (req, res) => {
   const { firstName, lastName, emailId, phoneNo, password, gender } = req.body;
-  console.log("============inside register");
+  console.log('============inside register');
   if (!firstName || !lastName || !emailId || !phoneNo || !password || !gender) {
-    throw new BadRequestError("please provide all values");
+    throw new BadRequestError(ErrorStatus.pleaseProvideAllValues);
   }
-  console.log("============inside3===============");
+  console.log('============inside3===============');
   const userAlreadyExists = await Patient.findOne({
     emailId,
   });
-  console.log("============inside4===============");
+  console.log('============inside4===============');
   if (userAlreadyExists) {
-    throw new BadRequestError("Email already in use");
+    throw new BadRequestError(ErrorStatus.emailAlreadyInUse);
   }
-  console.log("============inside5===============");
+  console.log('============inside5===============');
   const patient = await Patient.create({
     firstName,
     lastName,
@@ -29,7 +29,7 @@ const register = async (req, res) => {
     password,
     gender,
   });
-  console.log("============inside6===============");
+  console.log('============inside6===============');
   const token = patient.createJWT();
 
   res.status(StatusCodes.CREATED).json({
@@ -43,25 +43,24 @@ const register = async (req, res) => {
     },
     token,
   });
-  console.log("============inside7===============");
 };
 
 const patientLogin = async (req, res, next) => {
   const { emailId, password } = req.body;
   try {
     if (!emailId || !password) {
-      throw new BadRequestError("please provide all values");
+      throw new BadRequestError(ErrorStatus.invalidCrdentials);
     }
     const patient = await Patient.findOne({
       emailId,
-    }).select("+password");
-    console.log("patient::::::", patient);
+    }).select('+password');
+    console.log('patient::::::', patient);
     if (!patient) {
-      throw new UnAuthenticatedError("invalid cerdentials");
+      throw new UnAuthenticatedError(ErrorStatus.invalidCrdentials);
     }
     const isPasswordCorrect = await patient.comparePassword(password);
     if (!isPasswordCorrect) {
-      throw new UnAuthenticatedError("Invalid Credentials");
+      throw new UnAuthenticatedError(ErrorStatus.invalidCrdentials);
     }
     const token = patient.createJWT();
     patient.password = undefined;
@@ -78,17 +77,17 @@ const doctorLogin = async (req, res, next) => {
   const { emailId, password } = req.body;
   try {
     if (!emailId || !password) {
-      throw new BadRequestError("please provide all values");
+      throw new BadRequestError(ErrorStatus.pleaseProvideAllValues);
     }
     const doctor = await Doctor.findOne({
       emailId,
-    }).select("+password");
+    }).select('+password');
     if (!doctor) {
-      throw new UnAuthenticatedError("invalid cerdentials");
+      throw new UnAuthenticatedError(ErrorStatus.invalidCrdentials);
     }
     const isPasswordCorrect = await doctor.comparePassword(password);
     if (!isPasswordCorrect) {
-      throw new UnAuthenticatedError("Invalid Credentials");
+      throw new UnAuthenticatedError(ErrorStatus.invalidCrdentials);
     }
     const token = doctor.createJWT();
     doctor.password = undefined;
@@ -105,17 +104,17 @@ const adminLogin = async (req, res, next) => {
   const { emailId, password } = req.body;
   try {
     if (!emailId || !password) {
-      throw new BadRequestError("please provide all values");
+      throw new BadRequestError(ErrorStatus.pleaseProvideAllValues);
     }
     const admin = await Admin.findOne({
       emailId,
-    }).select("+password");
+    }).select('+password');
     if (!admin) {
-      throw new UnAuthenticatedError("invalid cerdentials");
+      throw new UnAuthenticatedError(ErrorStatus.invalidCrdentials);
     }
     const isPasswordCorrect = await admin.comparePassword(password);
     if (!isPasswordCorrect) {
-      throw new UnAuthenticatedError("Invalid Credentials");
+      throw new UnAuthenticatedError(ErrorStatus.invalidCrdentials);
     }
     const token = admin.createJWT();
     admin.password = undefined;
