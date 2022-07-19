@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { getAppointment } from "../../redux/doctorAction";
 import { getPrescription } from "../../redux/doctorAction";
-import Header from "./Header";
+// import Header from "./Header";
 import axios from "axios";
 
 function Doctor() {
@@ -40,22 +40,9 @@ const cancelAppointment = (_id) => {
 }
 
   return (
-    <div>
-      <div>
-        <Header />
-      </div>
-      <div style={{ paddingTop: "50px" }} />
-      <div class="container-fluid" style={{ marginTop: "50px" }}>
-        <h3
-          style={{
-            marginLeft: "",
-            paddingBottom: "20px",
-            fontFamily: "'IBM Plex Sans' sans-serif",
-          }}
-        >
-          {" "}
-          Welcome{" "}
-        </h3>
+    <>
+      <h3 className="h3">Welcome </h3>
+   
         <div class="row">
           <div
             class="col-md-4"
@@ -290,8 +277,7 @@ const cancelAppointment = (_id) => {
             </div>
           </div>
         </div>
-      </div>
-    </div>
+   </>
   );
 }
 

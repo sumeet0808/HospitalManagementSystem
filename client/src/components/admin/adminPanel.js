@@ -58,49 +58,8 @@ function Adminpanel() {
   };
 
   return (
-    <div>
-      <nav className="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
-        <a className="navbar-brand" href="/">
-          <i className="fa fa-user-plus" aria-hidden="true"></i> Global Hospital
-        </a>
-        <button
-          className="navbar-toggler"
-          type="button"
-          data-toggle="collapse"
-          data-target="#navbarSupportedContent"
-          aria-controls="navbarSupportedContent"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span className="navbar-toggler-icon"></span>
-        </button>
-
-        <div className="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul className="navbar-nav mr-auto">
-            <li className="nav-item">
-              <a className="nav-link" href="/Dashboard">
-                <i className="fa fa-sign-out" aria-hidden="true"></i>Logout
-              </a>
-            </li>
-            {/* <li className="nav-item">
-              <a className="nav-link" href="#"></a>
-            </li> */}
-          </ul>
-        </div>
-      </nav>
-
-      <div style={{ paddingTop: "50px" }}>
-        <div className="container-fluid" style={{ marginTop: "50px" }}>
-          <h3
-            style={{
-              marginLeft: "40%",
-              paddingBottom: "20px",
-              fontFamily: "IBM Plex Sans, sans-serif",
-            }}
-          >
-            WELCOME ADMIN
-          </h3>
-
+    <>
+      <h3 className="h3">Welcome </h3>
           <div className="row">
             <div
               className="col-md-4"
@@ -810,9 +769,7 @@ function Adminpanel() {
               </div>
             </div>
           </div>
-        </div>
-      </div>
-    </div>
+   </>
   );
 }
 export default Adminpanel;

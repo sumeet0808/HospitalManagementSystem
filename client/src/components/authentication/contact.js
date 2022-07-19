@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import Header from "./header";
 import axios from "axios";
+// import Header from './header'
 import config from "../../config";
 function Contact() {
   const [userName, setuserName] = useState("");
@@ -24,7 +24,7 @@ function Contact() {
   return (
     <div>
       <div>
-        <Header />
+        {/* <Header /> */}
       </div>
       <div
         class="p-3 mb-8 bg-light text-dark"
@@ -194,8 +194,8 @@ function Contact() {
             </div>
           </div>
         </div>
-      </div>
-    </div>
+    //   </div>
+    // </div>
   );
 }
 

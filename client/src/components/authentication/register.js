@@ -1,5 +1,5 @@
 import React from "react";
-import Header from "./header";
+// import Header from "./header";
 import { useState } from "react";
 import axios from "axios";
 import config from "../../config";
@@ -45,7 +45,7 @@ function Register() {
   return (
     <div class="p-3 mb-8 bg-light text-dark">
       <div>
-        <Header />
+        {/* <Header /> */}
       </div>
 
       <div

@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import Header from "./header";
+// import Header from "./header";
 import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -62,7 +62,7 @@ function Login() {
     <div class="p-3 mb-8 bg-light text-dark">
       {/* > */}
       <div>
-        <Header />
+        {/* <Header /> */}
       </div>
       <div
         class="container register"
