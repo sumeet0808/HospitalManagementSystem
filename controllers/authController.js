@@ -137,7 +137,7 @@ const adminLogin = async (req, res, next) => {
 //   ) {
 //     token = req.headers.authorization.split(" ")[1];
 //   }
-
+//   console.log("In protect");
 //   if (!token) {
 //     return next("You are not logged in! Please log in to get access.", 401);
 //   }
