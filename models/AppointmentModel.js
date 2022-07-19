@@ -4,7 +4,7 @@ import validator from "validator";
 const AppointmentSchema = new mongoose.Schema({
   pId: {
     type: String,
-    required: [true, "Enter a patient Id !"],
+    // required: [true, "Enter a patient Id !"],
   },
   firstName: {
     type: String,

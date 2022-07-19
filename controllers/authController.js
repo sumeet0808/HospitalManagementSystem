@@ -7,7 +7,6 @@ import login from "./loginController.js";
 
 const register = async (req, res) => {
   const { firstName, lastName, emailId, phoneNo, password, gender } = req.body;
-
   if (!firstName || !lastName || !emailId || !phoneNo || !password || !gender) {
     throw new BadRequestError("please provide all values");
   }
@@ -17,7 +16,7 @@ const register = async (req, res) => {
   if (userAlreadyExists) {
     throw new BadRequestError("Email already in use");
   }
-  const patient = await Patient.create({
+  const data = await Patient.create({
     firstName,
     lastName,
     emailId,
@@ -25,17 +24,17 @@ const register = async (req, res) => {
     password,
     gender,
   });
-
-  const token = patient.createJWT();
+  const token = data.createJWT();
 
   res.status(StatusCodes.CREATED).json({
-    patient: {
-      firstName: patient.firstName,
-      lastName: patient.lastName,
-      emailId: patient.emailId,
-      phoneNo: patient.phoneNo,
-      password: patient.password,
-      gender: patient.gender,
+    status: "success",
+    data: {
+      firstName: data.firstName,
+      lastName: data.lastName,
+      emailId: data.emailId,
+      phoneNo: data.phoneNo,
+      password: data.password,
+      gender: data.gender,
     },
     token,
   });

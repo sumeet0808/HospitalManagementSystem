@@ -1,4 +1,2 @@
-const Patients = () => {
-  return <div>Patients components here</div>;
-};
-export default Patients;
+import Patient from "./Patient";
+export { Patient };

@@ -24,19 +24,19 @@ import prescribeRouter from "./routes/prescribeRoutes.js";
 import notFoundMiddleware from "./middleware/not-found.js";
 import errorHandlerMiddleware from "./middleware/error-handler.js";
 import authenticateUser from "./middleware/auth.js";
-const allowedOrigin = ['http://localhost:5000'];
-app.use(cors({
-  credentials: true,
-  origin: allowedOrigin
-}));
-app.use(function (req, res, next) {
-  res.header('Access-Control-Allow-Origin', req.headers.origin);
-  res.header('Access-Control-Allow-Credentials', "true");
-  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,UPDATE,OPTIONS');
-  res.header('Access-Control-Allow-Headers', 'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept');
-  res.setHeader('Access-Control-Allow-Headers', 'Set-Cookie')
-  next();
-});
+// const allowedOrigin = ['http://localhost:5000'];
+// app.use(cors({
+//   credentials: true,
+//   origin: allowedOrigin
+// }));
+// app.use(function (req, res, next) {
+//   res.header('Access-Control-Allow-Origin', req.headers.origin);
+//   res.header('Access-Control-Allow-Credentials', "true");
+//   res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,UPDATE,OPTIONS');
+//   res.header('Access-Control-Allow-Headers', 'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept');
+//   res.setHeader('Access-Control-Allow-Headers', 'Set-Cookie')
+//   next();
+// });
 
 if (process.env.NODE_ENV !== "production") {
   app.use(morgan("dev"));
