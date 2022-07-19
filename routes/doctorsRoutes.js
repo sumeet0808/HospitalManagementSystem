@@ -7,19 +7,16 @@ import {
   getAllDoctors,
   getDoctorByEmail,
 } from "../controllers/doctorController.js";
-// import { protect } from "../controllers/authController.js";
-
-// router.route("/createDoctor").post(protect, createDoctor);
-// router.route("/getAllDoctors").get(protect, getAllDoctors);
-// // remember about :id
-// router
-//   .route("/deleteDoctorByEmail/:emailId")
-//   .delete(protect, deleteDoctorByEmail);
+//import { protect } from "../controllers/authController.js";
 
 router.route("/createDoctor").post(createDoctor);
 router.route("/getAllDoctors").get(getAllDoctors);
+// remember about :id
 router.route("/deleteDoctorByEmail/:emailId").delete(deleteDoctorByEmail);
-router.route("/getDoctorByEmail/:emailId").get(getDoctorByEmail);
 
+// router.route("/createDoctor").post(createDoctor);
+// router.route("/getAllDoctors").get(getAllDoctors);
+// router.route("/deleteDoctorByEmail/:emailId").delete(deleteDoctorByEmail);
+// router.route("/getDoctorByEmail/:emailId").get(getDoctorByEmail);
 
 export default router;
