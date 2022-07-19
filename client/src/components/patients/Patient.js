@@ -29,12 +29,20 @@ const Patient = () => {
   //   };
   //   getSpecialization();
   // }, []);
+<<<<<<< HEAD
 
   // const handlespecialization = (event) => {
   //   const getspecializationid = event.target.value;
   //   setSpecializationid(getspecializationid);
   // };
 
+=======
+
+  // const handlespecialization = (event) => {
+  //   const getspecializationid = event.target.value;
+  //   setSpecializationid(getspecializationid);
+  // };
+>>>>>>> 1ac8424176b79b19c47d58b2adc48acffb88b21e
   //////////////////////////////////////////////////////////////////////
 
   //...................For Appointment History.............................
@@ -65,7 +73,7 @@ const Patient = () => {
     const response = await axios.get(
       `http://localhost:5000/api/v1/doctor/getAllDoctors`
     );
-    let doctorData = await response.data.doctor;
+    let doctorData = await response.data.data;
     setSome(doctorData);
     doctorData
       .filter((item) => {
@@ -271,46 +279,46 @@ const Patient = () => {
               </div>
             </div>
 
-            {/**********************************BOOKING-PAGE***************************** */}
-            <div
-              class="tab-pane fade"
-              id="list-home"
-              role="tabpanel"
-              aria-labelledby="list-home-list"
-            >
-              <div class="container-fluid">
-                <div class="card">
-                  <div class="card-body">
-                    <center>
-                      <h4>Create an appointment</h4>
-                    </center>
-                    <br />
-                    <form class="form-group">
-                      <div class="row">
-                        <div class="col-md-4">
-                          <label for="spec">Specialization:</label>
-                        </div>
-                        <div class="col-md-8">
-                          <select
-                            name="spec"
-                            class="form-control"
-                            id="spec"
-                            required="required"
-                            value={specialization}
-                            onChange={
-                              (e) => setSpecialization(e.target.value)
-                              // handlespecialization(e)
-                            }
-                          >
-                            <option value="string" selected>
-                              Select Specialization
-                            </option>
+                {/**********************************BOOKING-PAGE***************************** */}
+                <div
+                  class="tab-pane fade"
+                  id="list-home"
+                  role="tabpanel"
+                  aria-labelledby="list-home-list"
+                >
+                  <div class="container-fluid">
+                    <div class="card">
+                      <div class="card-body">
+                        <center>
+                          <h4>Create an appointment</h4>
+                        </center>
+                        <br />
+                        <form class="form-group">
+                          <div class="row">
+                            <div class="col-md-4">
+                              <label for="spec">Specialization:</label>
+                            </div>
+                            <div class="col-md-8">
+                              <select
+                                name="spec"
+                                class="form-control"
+                                id="spec"
+                                required="required"
+                                value={specialization}
+                                onChange={
+                                  (e) => setSpecialization(e.target.value)
+                                  // handlespecialization(e)
+                                }
+                              >
+                                <option value="string" selected>
+                                  Select Specialization
+                                </option>
 
-                            {data.map((d) => (
-                              <option> {d.name} </option>
-                            ))}
+                                {data.map((d) => (
+                                  <option> {d.name} </option>
+                                ))}
 
-                            {/* {specialization.map((getspec, index) => (
+                                {/* {specialization.map((getspec, index) => (
                                   <option
                                     key={index}
                                     value={getspec.specialization_id}
@@ -318,10 +326,10 @@ const Patient = () => {
                                     {getspec.specialization_name}
                                   </option>
                                 ))} */}
-                          </select>
-                        </div>
-                        <br />
-                        <br />
+                              </select>
+                            </div>
+                            <br />
+                            <br />
 
                         <div class="col-md-4">
                           <label for="doctor">Doctors:</label>

@@ -1,7 +1,8 @@
-import Appointment from "../models/AppointmentModel.js";
-import { currentStatus } from "./constants.js";
-import { StatusCodes } from "http-status-codes";
-import { BadRequestError, NotFoundError } from "../errors/index.js";
+import Appointment from '../models/AppointmentModel.js';
+import { currentStatus } from './constants.js';
+import { ErrorStatus } from './constants.js';
+import { StatusCodes } from 'http-status-codes';
+import { BadRequestError, NotFoundError } from '../errors/index.js';
 
 //Admin
 const getAllAppointmentsForAdmin = async (req, res) => {
@@ -24,7 +25,7 @@ const getAllAppointmentsForAdmin = async (req, res) => {
     },
   ]);
   res.status(200).json({
-    status: "Success",
+    status: 'Success',
     appointment,
   });
 };
@@ -48,7 +49,7 @@ const getAllAppointmentForDoctor = async (req, res) => {
   ]);
   // SEND RESPONSE
   res.status(200).json({
-    status: "Success",
+    status: 'Success',
     total: appointments.length,
     appointments,
   });
@@ -68,16 +69,16 @@ const getAppointmentPrescriptionList = async (req, res) => {
     },
     {
       $lookup: {
-        from: "doctors",
-        localField: "pId",
-        foreignField: "pId",
-        as: "Prescription",
+        from: 'doctors',
+        localField: 'pId',
+        foreignField: 'pId',
+        as: 'Prescription',
       },
     },
-    { $unwind: "$Prescription" },
+    { $unwind: '$Prescription' },
   ]);
   res.status(200).json({
-    status: "Success",
+    status: 'Success',
     data,
   });
 };
@@ -95,7 +96,7 @@ const cancelAppointmentStatusByDoctor = async (req, res) => {
     { new: true }
   ); //condition
   res.status(200).json({
-    status: "Success",
+    status: 'Success',
     data,
   });
 };
@@ -112,7 +113,7 @@ const cancelAppointmentStatusByPatient = async (req, res) => {
     { new: true }
   );
   res.status(200).json({
-    status: "Success",
+    status: 'Success',
     data,
   });
 };
@@ -124,7 +125,7 @@ const getAppointmentByPatientId = async (req, res) => {
     throw new NotFoundError(`No patient with id :${patientId}`);
   }
   res.json({
-    status: "Success",
+    status: 'Success',
     total: patient.length,
     patient,
   });
@@ -140,19 +141,10 @@ const createAppointment = async (req, res, next) => {
       appTime,
       appDate,
     } = req.body;
-    if (
-      !pId ||
-      !specialization ||
-      !doctorName ||
-      !consultancyFees ||
-      !appTime ||
-      !appDate
-    ) {
-      throw new BadRequestError("Please Provide All Fields");
-    }
+   
     const appointment = await Appointment.create(req.body);
     res.status(StatusCodes.OK).json({
-      Status: "Success",
+      Status: 'Success',
       Total: appointment.length,
       appointment,
     });
@@ -170,7 +162,7 @@ const getAppointmentByContact = async (req, res) => {
     throw new NotFoundError(`No appointment with id :${appointmentContact}`);
   }
   res.status(StatusCodes.OK).json({
-    status: "Success",
+    status: 'Success',
     appointment,
   });
 };

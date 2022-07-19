@@ -1,6 +1,7 @@
-import Doctor from "../models/DoctorModel.js";
-import { StatusCodes } from "http-status-codes";
-import { BadRequestError, NotFoundError } from "../errors/index.js";
+import Doctor from '../models/DoctorModel.js';
+import { StatusCodes } from 'http-status-codes';
+import { BadRequestError, NotFoundError } from '../errors/index.js';
+import { ErrorStatus } from './constants.js';
 
 const createDoctor = async (req, res) => {
   const {
@@ -12,22 +13,13 @@ const createDoctor = async (req, res) => {
     consultancyFees,
   } = req.body;
 
-  if (
-    !doctorName ||
-    !emailId ||
-    !specialization ||
-    !password ||
-    !confirmPassword ||
-    !consultancyFees
-  ) {
-    throw new BadRequestError("Please provide all values");
-  }
-  const doctor = await Doctor.create(req.body);
-  res.status(StatusCodes.CREATED).json({ doctor });
+
+  const data = await Doctor.create(req.body);
+  res.status(StatusCodes.CREATED).json({ status: "success", data });
 };
 
 const getAllDoctors = async (req, res) => {
-  const doctor = await Doctor.aggregate([
+  const data = await Doctor.aggregate([
     {
       $project: {
         doctorName: 1,
@@ -38,28 +30,28 @@ const getAllDoctors = async (req, res) => {
       },
     },
   ]);
-  res.status(StatusCodes.OK).json({ status: "success", doctor });
+  res.status(StatusCodes.OK).json({ status: "success", data });
 };
 
 const deleteDoctorByEmail = async (req, res) => {
   const { emailId: doctorEmail } = req.params;
-  const doctor = await Doctor.findOne({ emailId: doctorEmail });
-  if (!doctor) {
-    throw new NotFoundError(`No doctor with id :${doctorEmail}`);
+  const data = await Doctor.findOne({ emailId: doctorEmail });
+  if (!data) {
+    throw new NotFoundError(`No doctor with email id :${doctorEmail}`);
   }
 
-  const result = await doctor.remove();
+  await data.remove();
   res.status(StatusCodes.OK).json({ msg: "Success! Doctor removed from list" });
 };
 const getDoctorByEmail = async (req, res) => {
   const { emailId: doctorEmail } = req.params;
-  const doctor = await Doctor.findOne({ emailId: doctorEmail });
-  if (!doctor) {
+  const data = await Doctor.findOne({ emailId: doctorEmail });
+  if (!data) {
     throw new NotFoundError(`No doctor with id :${doctorEmail}`);
   }
   res.status(StatusCodes.OK).json({
     status: "Success",
-    doctor,
+    data,
   });
 };
 
