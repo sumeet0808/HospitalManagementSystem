@@ -10,14 +10,11 @@ const register = async (req, res) => {
   if (!firstName || !lastName || !emailId || !phoneNo || !password || !gender) {
     throw new BadRequestError(ErrorStatus.pleaseProvideAllValues);
   }
-  console.log('============inside3===============');
+ 
   const userAlreadyExists = await Patient.findOne({
     emailId,
   });
-  console.log('============inside4===============');
-  const userAlreadyExists = await Patient.findOne({
-    emailId,
-  });
+
   if (userAlreadyExists) {
     throw new BadRequestError(ErrorStatus.emailAlreadyInUse);
   }
