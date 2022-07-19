@@ -29,20 +29,11 @@ const Patient = () => {
   //   };
   //   getSpecialization();
   // }, []);
-<<<<<<< HEAD
 
   // const handlespecialization = (event) => {
   //   const getspecializationid = event.target.value;
   //   setSpecializationid(getspecializationid);
   // };
-
-=======
-
-  // const handlespecialization = (event) => {
-  //   const getspecializationid = event.target.value;
-  //   setSpecializationid(getspecializationid);
-  // };
->>>>>>> 1ac8424176b79b19c47d58b2adc48acffb88b21e
   //////////////////////////////////////////////////////////////////////
 
   //...................For Appointment History.............................
