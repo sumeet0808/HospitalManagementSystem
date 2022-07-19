@@ -15,7 +15,8 @@ const PrescribeSchema = new mongoose.Schema({
   },
   pId: {
     type: String,
-    required: [true, ErrorStatus.enterPid],
+    required: [true, "Enter a pid !"],
+    unique: true,
   },
 });
 export default mongoose.model('Prescribe', PrescribeSchema);

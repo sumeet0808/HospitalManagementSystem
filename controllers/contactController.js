@@ -8,19 +8,19 @@ const createQueries = async (req, res) => {
   if (!userName || !email || !contact || !message) {
     throw new BadRequestError(ErrorStatus.pleaseProvideAllValues);
   }
-  const contacts = await Contact.create(req.body);
-  res.status(StatusCodes.CREATED).json({ status: 'success', contacts });
+  const data = await Contact.create(req.body);
+  res.status(StatusCodes.CREATED).json({ status: "success", data });
 };
 const getAllQueries = async (req, res) => {
   let result = Contact.find();
-  const contacts = await result;
-  res.status(StatusCodes.OK).json({ status: 'success', contacts });
+  const data = await result;
+  res.status(StatusCodes.OK).json({ status: "success", data });
 };
 const getQueriesByContact = async (req, res) => {
   const { contact: queriesContact } = req.params;
 
-  const contact = await Contact.findOne({ contact: queriesContact });
-  res.status(StatusCodes.OK).json({ status: 'success', contact });
+  const data = await Contact.findOne({ contact: queriesContact });
+  res.status(StatusCodes.OK).json({ status: "success", data });
 };
 
 export { createQueries, getAllQueries, getQueriesByContact };
