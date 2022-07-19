@@ -1,16 +1,15 @@
-import Patient from "../models/PatientModel.js";
-import Doctor from "../models/DoctorModel.js";
-import Admin from "../models/AdminModel.js";
-import { StatusCodes } from "http-status-codes";
-import { BadRequestError, UnAuthenticatedError } from "../errors/index.js";
-import login from "./loginController.js";
+import Patient from '../models/PatientModel.js';
+import Doctor from '../models/DoctorModel.js';
+import Admin from '../models/AdminModel.js';
+import { StatusCodes } from 'http-status-codes';
+import { BadRequestError, UnAuthenticatedError } from '../errors/index.js';
+import login from './loginController.js';
+import { ErrorStatus } from './constants.js';
 
 const register = async (req, res) => {
   const { firstName, lastName, emailId, phoneNo, password, gender } = req.body;
-  if (!firstName || !lastName || !emailId || !phoneNo || !password || !gender) {
-    throw new BadRequestError(ErrorStatus.pleaseProvideAllValues);
-  }
  
+
   const userAlreadyExists = await Patient.findOne({
     emailId,
   });
@@ -29,7 +28,7 @@ const register = async (req, res) => {
   const token = data.createJWT();
 
   res.status(StatusCodes.CREATED).json({
-    status: "success",
+    status: 'success',
     data: {
       firstName: data.firstName,
       lastName: data.lastName,
@@ -43,15 +42,15 @@ const register = async (req, res) => {
 };
 
 const patientLogin = async (req, res, next) => {
-  login(req, res, Patient, next)
+  login(req, res, Patient, next);
 };
 
 const doctorLogin = async (req, res, next) => {
-  login(req, res, Doctor, next)
+  login(req, res, Doctor, next);
 };
 
 const adminLogin = async (req, res, next) => {
-  login(req, res, Admin, next)
+  login(req, res, Admin, next);
 };
 
 // const protect = async (req, res, next) => {

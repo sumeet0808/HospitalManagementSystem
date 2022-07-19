@@ -13,16 +13,7 @@ const createDoctor = async (req, res) => {
     consultancyFees,
   } = req.body;
 
-  if (
-    !doctorName ||
-    !emailId ||
-    !specialization ||
-    !password ||
-    !confirmPassword ||
-    !consultancyFees
-  ) {
-    throw new BadRequestError(ErrorStatus.pleaseProvideAllValues);
-  }
+
   const data = await Doctor.create(req.body);
   res.status(StatusCodes.CREATED).json({ status: "success", data });
 };

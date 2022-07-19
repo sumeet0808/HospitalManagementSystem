@@ -141,16 +141,7 @@ const createAppointment = async (req, res, next) => {
       appTime,
       appDate,
     } = req.body;
-    if (
-      !pId ||
-      !specialization ||
-      !doctorName ||
-      !consultancyFees ||
-      !appTime ||
-      !appDate
-    ) {
-      throw new BadRequestError(ErrorStatus.pleaseProvideAllValues);
-    }
+   
     const appointment = await Appointment.create(req.body);
     res.status(StatusCodes.OK).json({
       Status: 'Success',

@@ -8,7 +8,6 @@ export const currentStatus = {
 
 export const ErrorStatus = {
   invalidCrdentials: 'Invalid Credentials',
-  pleaseProvideAllValues: 'please provide all values',
   authenticationInvalid: 'Authentication Invalid',
   pleaseEnterFirstName: 'Please enter First name',
   pleaseProvideLastName: 'Please Provide Last Name',
