@@ -51,9 +51,11 @@ app.use(mongoSanitize());
 
 //Routes
 app.use("/api/v1/auth", authRouter);
-app.use("/api/v1/doctor", authenticateUser, doctorsRouter);
+app.use("/api/v1/doctor", doctorsRouter);
+//app.use("/api/v1/doctor", authenticateUser, doctorsRouter);
 app.use("/api/v1/contact", contactRouter);
-app.use("/api/v1/patient", authenticateUser, patientRouter);
+//app.use("/api/v1/patient", authenticateUser, patientRouter);
+app.use("/api/v1/patient", patientRouter);
 app.use("/api/v1/appointment", appointmentRouter);
 app.use("/api/v1/prescribe", prescribeRouter);
 
