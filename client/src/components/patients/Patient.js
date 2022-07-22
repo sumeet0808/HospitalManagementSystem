@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 // import Header from "./Header";
 import moment from "moment";
 import { patientList } from "../../redux/patientAction";
-import '../LayoutStyle.css'
+import "../LayoutStyle.css";
 
 const Patient = () => {
   const data = [
@@ -50,7 +50,7 @@ const Patient = () => {
   const [consultancyFees, setConsultancyFees] = useState("");
   const [appDate, setDate] = useState("");
   const [appTime, setTime] = useState("");
-  // const [history, setHistory] = useState("");
+  //const [history, setHistory] = useState("");
   const [some, setSome] = useState("");
   const [getId, setGetId] = useState("");
   const [allData, setallData] = useState([]);
@@ -121,6 +121,20 @@ const Patient = () => {
       });
   };
   const result = Object.keys(allData).map((key) => allData[key]);
+  
+  // console.log("result", result);
+  // const findId = result.map(({ _id }) => setGetId(_id));
+  // // console.log("findId", findId);
+  // console.log("findId", getId);
+
+  // const getDataById = async () => {
+  //   const response = await axios
+  //     .get(
+  //       `http://localhost:5000/api/v1/appointment/getAppointmentByPatientId/${getId}`
+  //     )
+  //     .then((res) => setHistory(res.data));
+  //   console.log("getId", history);
+  // };
 
   //..........................For Date............................................
   const disablePastDate = () => {
@@ -164,7 +178,7 @@ const Patient = () => {
   return (
     <>
       <h3 className="h3">Welcome </h3>
-     {/************************MENU-ITEMS*************************/}
+      {/************************MENU-ITEMS*************************/}
       <div class="row">
         <div class="col-md-4" style={{ maxWidth: "25%", marginTop: "3%" }}>
           <div class="list-group" id="list-tab" role="tablist">
@@ -270,46 +284,46 @@ const Patient = () => {
               </div>
             </div>
 
-                {/**********************************BOOKING-PAGE***************************** */}
-                <div
-                  class="tab-pane fade"
-                  id="list-home"
-                  role="tabpanel"
-                  aria-labelledby="list-home-list"
-                >
-                  <div class="container-fluid">
-                    <div class="card">
-                      <div class="card-body">
-                        <center>
-                          <h4>Create an appointment</h4>
-                        </center>
-                        <br />
-                        <form class="form-group">
-                          <div class="row">
-                            <div class="col-md-4">
-                              <label for="spec">Specialization:</label>
-                            </div>
-                            <div class="col-md-8">
-                              <select
-                                name="spec"
-                                class="form-control"
-                                id="spec"
-                                required="required"
-                                value={specialization}
-                                onChange={
-                                  (e) => setSpecialization(e.target.value)
-                                  // handlespecialization(e)
-                                }
-                              >
-                                <option value="string" selected>
-                                  Select Specialization
-                                </option>
+            {/**********************************BOOKING-PAGE***************************** */}
+            <div
+              class="tab-pane fade"
+              id="list-home"
+              role="tabpanel"
+              aria-labelledby="list-home-list"
+            >
+              <div class="container-fluid">
+                <div class="card">
+                  <div class="card-body">
+                    <center>
+                      <h4>Create an appointment</h4>
+                    </center>
+                    <br />
+                    <form class="form-group">
+                      <div class="row">
+                        <div class="col-md-4">
+                          <label for="spec">Specialization:</label>
+                        </div>
+                        <div class="col-md-8">
+                          <select
+                            name="spec"
+                            class="form-control"
+                            id="spec"
+                            required="required"
+                            value={specialization}
+                            onChange={
+                              (e) => setSpecialization(e.target.value)
+                              // handlespecialization(e)
+                            }
+                          >
+                            <option value="string" selected>
+                              Select Specialization
+                            </option>
 
-                                {data.map((d) => (
-                                  <option> {d.name} </option>
-                                ))}
+                            {data.map((d) => (
+                              <option> {d.name} </option>
+                            ))}
 
-                                {/* {specialization.map((getspec, index) => (
+                            {/* {specialization.map((getspec, index) => (
                                   <option
                                     key={index}
                                     value={getspec.specialization_id}
@@ -317,10 +331,10 @@ const Patient = () => {
                                     {getspec.specialization_name}
                                   </option>
                                 ))} */}
-                              </select>
-                            </div>
-                            <br />
-                            <br />
+                          </select>
+                        </div>
+                        <br />
+                        <br />
 
                         <div class="col-md-4">
                           <label for="doctor">Doctors:</label>

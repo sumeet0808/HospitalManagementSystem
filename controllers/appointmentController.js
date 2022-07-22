@@ -1,8 +1,8 @@
-import Appointment from '../models/AppointmentModel.js';
-import { currentStatus } from './constants.js';
-import { ErrorStatus } from './constants.js';
-import { StatusCodes } from 'http-status-codes';
-import { BadRequestError, NotFoundError } from '../errors/index.js';
+import Appointment from "../models/AppointmentModel.js";
+import { currentStatus } from "./constants.js";
+import { ErrorStatus } from "./constants.js";
+import { StatusCodes } from "http-status-codes";
+import { BadRequestError, NotFoundError } from "../errors/index.js";
 
 //Admin
 const getAllAppointmentsForAdmin = async (req, res) => {
@@ -68,13 +68,13 @@ const getAppointmentPrescriptionList = async (req, res) => {
     },
     {
       $lookup: {
-        from: 'doctors',
-        localField: 'pId',
-        foreignField: 'pId',
-        as: 'Prescription',
+        from: "doctors",
+        localField: "pId",
+        foreignField: "pId",
+        as: "Prescription",
       },
     },
-    { $unwind: '$Prescription' },
+    { $unwind: "$Prescription" },
   ]);
   res.status(StatusCodes.OK).json({
     status: 'success',
@@ -104,6 +104,7 @@ const cancelAppointmentStatusByPatient = async (req, res) => {
   const statusName = Object.keys(currentStatus).find(
     (key) => currentStatus[key] == req.body.Status
   );
+  console.log("statusname....", statusName);
   const data = await Appointment.findOneAndUpdate(
     {
       _id: req.body.AppointmentId,
@@ -164,6 +165,14 @@ const getAppointmentByContact = async (req, res) => {
   });
 };
 
+/////////////////////////////////////////////////////
+const getallappointments = async (req, res) => {
+  // NO AWAIT
+  let result = Appointment.find();
+  const appointnment = await result;
+  res.status(StatusCodes.OK).json(appointnment);
+};
+
 export {
   getAppointmentPrescriptionList,
   cancelAppointmentStatusByDoctor,
@@ -173,4 +182,5 @@ export {
   getAppointmentByPatientId,
   createAppointment,
   getAppointmentByContact,
+  getallappointments,
 };
