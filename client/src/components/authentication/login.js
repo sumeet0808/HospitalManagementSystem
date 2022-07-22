@@ -5,8 +5,8 @@ import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import config from "../../config";
-import {setSessionCookie} from './session'
-import Cookie from "js-cookie"
+// import { setSessionCookie } from "./session";
+// import Cookie from "js-cookie"
 
 function Login() {
   const [emailId, setemailId] = useState("");
@@ -23,7 +23,7 @@ function Login() {
         password,
       })
       .then(() => {
-        setSessionCookie({ emailId, password });
+        // setSessionCookie({ emailId, password });
         alert("Patient Login Sucessfully!!!!!");
         // eslint-disable-next-line no-restricted-globals
         navigate("/Patient");
@@ -33,7 +33,7 @@ function Login() {
         alert("Invalid Credentials");
       });
   };
-  
+
   if (loading) {
     return <h4>Logging in...</h4>;
   }
@@ -73,9 +73,7 @@ function Login() {
   return (
     <div class="p-3 mb-8 bg-light text-dark">
       {/* > */}
-      <div>
-        {/* <Header /> */}
-      </div>
+      <div>{/* <Header /> */}</div>
       <div
         class="container register"
         style={{

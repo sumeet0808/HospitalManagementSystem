@@ -10,35 +10,28 @@ import { Adminpanel } from "./components/admin";
 import Login from "./components/authentication/login";
 import Register from "./components/authentication/register";
 import Layout from "./components/Layout";
-import Header from "./components/Header";
-import HeaderAuth from "./components/authentication/HeaderAuth";
-import LogoutHandler from "./components/authentication/logout"
+import HeaderAuth from "./components/HeaderComponents/HeaderAuth";
+import LogoutHandler from "./components/authentication/logout";
+import Header from "./components/HeaderComponents/Header";
 
 function App() {
   return (
     <BrowserRouter>
-      {window.location.pathname !== "/" ? <Header /> : <HeaderAuth />}
-      <Routes>
-        <Route path="/" element={<Register />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/contact" element={<Contact />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/login" element={<LogoutHandler />} />
-      </Routes>
-
       <Layout>
-      <Routes>
+        {window.location.pathname !== "/" ? <Header /> : <HeaderAuth />}
+        <Routes>
+          <Route path="/login" exact element={<Login />} />
+          <Route path="/contact" exact element={<Contact />} />
+          <Route path="/about" exact element={<About />} />
           <Route path="/" element={<Register />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/about" element={<About />} />
+
           <Route path="/Doctor" element={<Doctor />} />
           <Route path="/Prescription" element={<Prescription />} />
           <Route path="/search" element={<Search />} />
           <Route path="/Patient" element={<Patient />} />
           <Route path="/adminPanel" element={<Adminpanel />} />
         </Routes>
-      </Layout> 
+      </Layout>
     </BrowserRouter>
   );
 }
