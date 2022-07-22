@@ -12,7 +12,7 @@ const Header = () => {
         <a class="navbar-brand" href="/">
           <i class="fa fa-user-plus" aria-hidden="true"></i> Global Hospital{" "}
         </a>
-        {/* <button
+        <button
           class="navbar-toggler"
           type="button"
           data-toggle="collapse"
@@ -23,9 +23,9 @@ const Header = () => {
           onClick={logout}
         >
           <span class="navbar-toggler-icon"></span>
-        </button> */}
+        </button>
 
-        {/* <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav mr-auto">
             <li class="nav-item">
               <a class="nav-link" href="logout.js">
@@ -37,7 +37,7 @@ const Header = () => {
               <a class="nav-link" href="#"></a>
             </li>
           </ul>
-        </div> */}
+        </div>
       </nav>
     </div>
   );

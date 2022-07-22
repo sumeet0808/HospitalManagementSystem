@@ -51,6 +51,8 @@ export const patientList = () => {
   };
 };
 
+
+
 // export const getDoctor = () => {
 //   return async (dispatch) => {
 //     const getDoctorList = async () => {
