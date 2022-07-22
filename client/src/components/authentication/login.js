@@ -5,25 +5,33 @@ import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import config from "../../config";
-import {setSessionCookie} from './session'
+import { setSessionCookie } from './session'
 import Cookie from "js-cookie"
+import InputField from "../common/InputField";
 
 function Login() {
-  const [emailId, setemailId] = useState("");
-  const [password, setpassword] = useState("");
+  // const [emailId, setemailId] = useState("");
+  // const [password, setpassword] = useState("");
   const [loading, setLoading] = useState(false);
+
+  const [data, setData] = useState({ emailId: "", password: "" })
+
+  const handleOnChange = (e) => {
+    const {name, value} = e.target
+    setData({...data, [name]:value})
+  };
 
   const navigate = useNavigate();
   const handlePatientLogin = async (e) => {
     e.preventDefault();
     setLoading(true);
     axios
-      .post(`${config.BASE_URL}auth/patientLogin`, {
-        emailId,
-        password,
+
+      .post(`${config.BASE_URL}auth/patientLogin`,{
+        ...data
       })
       .then(() => {
-        setSessionCookie({ emailId, password });
+        //setSessionCookie({ emailId, password });
         alert("Patient Login Sucessfully!!!!!");
         // eslint-disable-next-line no-restricted-globals
         navigate("/Patient");
@@ -33,7 +41,7 @@ function Login() {
         alert("Invalid Credentials");
       });
   };
-  
+
   if (loading) {
     return <h4>Logging in...</h4>;
   }
@@ -42,8 +50,7 @@ function Login() {
     e.preventDefault();
     axios
       .post(`${config.BASE_URL}auth/doctorLogin`, {
-        emailId,
-        password,
+        ...data
       })
       .then(() => {
         alert("Doctor Login Sucessfully!!!!!");
@@ -58,8 +65,7 @@ function Login() {
     e.preventDefault();
     axios
       .post(`${config.BASE_URL}auth/adminLogin`, {
-        emailId,
-        password,
+       ...data
       })
       .then(() => {
         alert("Admin Login Sucessfully!!!!!");
@@ -155,12 +161,13 @@ function Login() {
                   <div class="row register-form">
                     <div class="col-md-6">
                       <div class="form-group">
-                        <input
-                          type="email"
-                          class="form-control"
+                        <InputField
+                          id="emailId"
+                          type="email"                          
                           placeholder="Email *"
                           name="emailId"
-                          onChange={(e) => setemailId(e.target.value)}
+                          value={data.emailId}
+                          onChange={handleOnChange}
                           onkeydown="return alphaOnly(event);"
                           required
                         />
@@ -168,12 +175,13 @@ function Login() {
                     </div>
                     <div class="col-md-6">
                       <div class="form-group">
-                        <input
-                          type="password"
-                          class="form-control"
+                        <InputField
+                          id="password"
+                          type="password"                          
                           placeholder="Password*"
                           name="password"
-                          onChange={(e) => setpassword(e.target.value)}
+                          value={data.password}
+                          onChange={handleOnChange}
                           required
                         />
                       </div>
@@ -203,12 +211,13 @@ function Login() {
                   <div class="row register-form">
                     <div class="col-md-6">
                       <div class="form-group">
-                        <input
-                          type="email"
-                          class="form-control"
+                      <InputField
+                          id="emailId"
+                          type="email"                          
                           placeholder="Email *"
                           name="emailId"
-                          onChange={(e) => setemailId(e.target.value)}
+                          value={data.emailId}
+                          onChange={handleOnChange}
                           onkeydown="return alphaOnly(event);"
                           required
                         />
@@ -216,12 +225,13 @@ function Login() {
                     </div>
                     <div class="col-md-6">
                       <div class="form-group">
-                        <input
-                          type="password"
-                          class="form-control"
-                          placeholder="Password *"
+                      <InputField
+                          id="password"
+                          type="password"                          
+                          placeholder="Password*"
                           name="password"
-                          onChange={(e) => setpassword(e.target.value)}
+                          value={data.password}
+                          onChange={handleOnChange}
                           required
                         />
                       </div>
@@ -249,12 +259,13 @@ function Login() {
                   <div class="row register-form">
                     <div class="col-md-6">
                       <div class="form-group">
-                        <input
-                          type="email"
-                          class="form-control"
+                      <InputField
+                          id="emailId"
+                          type="email"                          
                           placeholder="Email *"
                           name="emailId"
-                          onChange={(e) => setemailId(e.target.value)}
+                          value={data.emailId}
+                          onChange={handleOnChange}
                           onkeydown="return alphaOnly(event);"
                           required
                         />
@@ -262,12 +273,13 @@ function Login() {
                     </div>
                     <div class="col-md-6">
                       <div class="form-group">
-                        <input
-                          type="password"
-                          class="form-control"
+                      <InputField
+                          id="password"
+                          type="password"                          
                           placeholder="Password*"
                           name="password"
-                          onChange={(e) => setpassword(e.target.value)}
+                          value={data.password}
+                          onChange={handleOnChange}
                           required
                         />
                       </div>
