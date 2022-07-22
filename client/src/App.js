@@ -11,6 +11,11 @@ import Login from "./components/authentication/login";
 import Register from "./components/authentication/register";
 import PrivateRoute from "./privateRoute";
 import { useEffect, useState } from "react";
+import Layout from "./components/Layout";
+import Header from "./components/HeaderComponents/Header";
+import HeaderAuth from "./components/HeaderComponents/HeaderAuth";
+import LogoutHandler from "./components/authentication/logout";
+
 function App() {
   const [auth, setAuth] = useState(localStorage.getItem("token"));
   useEffect(() => {
@@ -38,6 +43,25 @@ function App() {
 
         <Route path="/login" exact element={<Login />} />
       </Routes>
+      <Layout>
+        {window.location.pathname !== "/" ? <Header /> : <HeaderAuth />}
+        <Routes>
+          <Route path="/" element={<Register />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/login" element={<LogoutHandler />} />
+          <Route path="/" element={<Register />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/Doctor" element={<Doctor />} />
+          <Route path="/Prescription" element={<Prescription />} />
+          <Route path="/search" element={<Search />} />
+          <Route path="/Patient" element={<Patient />} />
+          <Route path="/adminPanel" element={<Adminpanel />} />
+        </Routes>
+      </Layout>
     </BrowserRouter>
   );
 }

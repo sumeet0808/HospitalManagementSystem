@@ -1,19 +1,25 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import Header from "./header";
+// import Header from "./header";
 import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import config from "../../config";
+import { setSessionCookie } from "./session";
+import Cookie from "js-cookie";
 
 function Login() {
   const [emailId, setemailId] = useState("");
   const [password, setpassword] = useState("");
+  const [loading, setLoading] = useState(false);
+
   const navigate = useNavigate();
   const data = {};
+
   const handlePatientLogin = async (e) => {
     e.preventDefault();
-    await axios
+    setLoading(true);
+    axios
       .post(`${config.BASE_URL}auth/patientLogin`, {
         emailId,
         password,
@@ -23,11 +29,16 @@ function Login() {
         localStorage["user"] = JSON.stringify(res.data.patient);
         alert("Patient Login Sucessfully!!!!!");
         navigate("/Patient");
+        setLoading(false);
       })
       .catch((error) => {
         alert("Invalid Credentials");
       });
   };
+
+  if (loading) {
+    return <h4>Logging in...</h4>;
+  }
 
   const handleDoctorLogin = (e) => {
     e.preventDefault();
@@ -46,6 +57,7 @@ function Login() {
         alert("Invalid Credentials");
       });
   };
+
   const handleAdminLogin = (e) => {
     e.preventDefault();
     axios
@@ -67,9 +79,7 @@ function Login() {
   return (
     <div class="p-3 mb-8 bg-light text-dark">
       {/* > */}
-      <div>
-        <Header />
-      </div>
+      <div>{/* <Header /> */}</div>
       <div
         class="container register"
         style={{

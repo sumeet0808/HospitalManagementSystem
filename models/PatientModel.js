@@ -1,54 +1,55 @@
-import mongoose from "mongoose";
-import validator from "validator";
-import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
+import mongoose from 'mongoose';
+import validator from 'validator';
+import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
+import { ErrorStatus } from '../controllers/constants.js';
 
 const PatientSchema = new mongoose.Schema({
   firstName: {
     type: String,
-    required: [true, "please enter First name"],
+    required: [true, ErrorStatus.pleaseEnterFirstName],
     minlength: 3,
     maxlength: 20,
     trim: true,
   },
   emailId: {
     type: String,
-    required: [true, "please enter email"],
+    required: [true, ErrorStatus.pleaseEnterEmail],
     validate: {
       validator: validator.isEmail,
-      message: "please provide a valid email",
+      message: ErrorStatus.pleaseProvideValidEmail,
     },
     unique: true,
   },
   password: {
     type: String,
-    required: [true, "pls enter password"],
+    required: [true, ErrorStatus.pleaseEnterPassword],
     minlength: 3,
     select: false,
   },
-   lastName: {
+  lastName: {
     type: String,
-    required: [true, "pls enter Last name"],
+    required: [true, ErrorStatus.pleaseProvideLastName],
     minlength: 3,
     maxlength: 20,
     trim: true,
   },
   phoneNo: {
     type: Number,
-    required: [true, "pls enter Last name"],
+    required: [true, ErrorStatus.pleaseProvideContact],
     trim: true,
     maxlength: 10,
   },
   gender: {
     type: String,
-    required: [true, "pls enter gender"],
+    required: [true, ErrorStatus.pleaseProvideGender],
     trim: true,
     maxlength: 20,
-  }
-})
+  },
+});
 
-PatientSchema.pre("save", async function () {
-  if (!this.isModified("password")) return;
+PatientSchema.pre('save', async function () {
+  if (!this.isModified('password')) return;
   const salt = await bcrypt.genSalt(10);
   this.password = await bcrypt.hash(this.password, salt);
 });
@@ -64,4 +65,4 @@ PatientSchema.methods.comparePassword = async function (candidatePassword) {
   return isMatch;
 };
 
-export default mongoose.model("Patient", PatientSchema);
+export default mongoose.model('Patient', PatientSchema);

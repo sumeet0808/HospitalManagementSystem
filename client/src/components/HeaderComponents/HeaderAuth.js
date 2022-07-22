@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-const Header = () => {
+const HeaderAuth = () => {
   return (
     <div
       style={{
@@ -97,6 +97,22 @@ const Header = () => {
                   </a>
                 </Link>
               </li>
+
+              <li class="nav-item">
+                <Link to="/logout">
+                  <a
+                    class="nav-link js-scroll-trigger"
+                    href="contact.js"
+                    style={{
+                      color: "white",
+                      fontFamily: "IBM Plex Sans, sans-serif",
+                    }}
+                    // style="color: white;font-family: 'IBM Plex Sans', sans-serif;"
+                  >
+                    <h6>Logout</h6>
+                  </a>
+                </Link>
+              </li>
             </ul>
           </div>
         </div>
@@ -105,4 +121,4 @@ const Header = () => {
   );
 };
 
-export default Header;
+export default HeaderAuth;

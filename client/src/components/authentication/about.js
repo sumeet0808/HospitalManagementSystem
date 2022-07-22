@@ -1,12 +1,12 @@
 import React from 'react'
-import Header from './header'
+// import Header from './header'
 import doctorman from './img-6.png'
 
 export const About = () => {
   return (
     <div >
       <div>
-        <Header />
+        {/* <Header /> */}
       </div>
       <div class="p-3 mb-8 bg-light text-dark">
         <section id="intro" class="intro" style={{ fontFamily: 'IBM Plex Sans, sans-serif' }}>

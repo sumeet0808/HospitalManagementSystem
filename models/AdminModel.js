@@ -1,41 +1,42 @@
-import mongoose from "mongoose";
-import validator from "validator";
-import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
+import mongoose from 'mongoose';
+import validator from 'validator';
+import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
+import { ErrorStatus } from '../controllers/constants.js';
 
 const AdminSchema = new mongoose.Schema({
   firstName: {
     type: String,
-    required: [true, "Please enter First name"],
+    required: [true, ErrorStatus.pleaseEnterFirstName],
     minlength: 3,
     maxlength: 20,
     trim: true,
   },
   emailId: {
     type: String,
-    required: [true, "Please enter email"],
+    required: [true, ErrorStatus.pleaseEnterEmail],
     validate: {
       validator: validator.isEmail,
-      message: "Please provide a valid email",
+      message: ErrorStatus.pleaseProvideValidEmail,
     },
     unique: true,
   },
   password: {
     type: String,
-    required: [true, "Please enter password"],
+    required: [true, ErrorStatus.pleaseEnterPassword],
     minlength: 3,
     select: false,
   },
   confirmPassword: {
     type: String,
-    required: [true, "Please confirm password"],
+    required: [true, ErrorStatus.pleaseConfirmPassword],
     minlength: 3,
     select: false,
   },
 });
 
-AdminSchema.pre("save", async function () {
-  if (!this.isModified("password")) return;
+AdminSchema.pre('save', async function () {
+  if (!this.isModified('password')) return;
   const salt = await bcrypt.genSalt(10);
   this.password = await bcrypt.hash(this.password, salt);
 });
@@ -51,4 +52,4 @@ AdminSchema.methods.comparePassword = async function (candidatePassword) {
   return isMatch;
 };
 
-export default mongoose.model("Admin", AdminSchema);
+export default mongoose.model('Admin', AdminSchema);

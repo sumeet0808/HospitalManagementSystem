@@ -1,5 +1,6 @@
-import mongoose from "mongoose";
-import validator from "validator";
+import mongoose from 'mongoose';
+import validator from 'validator';
+import { ErrorStatus } from '../controllers/constants.js';
 
 const AppointmentSchema = new mongoose.Schema({
   pId: {
@@ -8,43 +9,43 @@ const AppointmentSchema = new mongoose.Schema({
   },
   firstName: {
     type: String,
-    required: [false, "Please Provide First Name"],
+    required: [false, ErrorStatus.pleaseEnterFirstName],
     maxlength: 50,
     trim: true,
   },
   lastName: {
     type: String,
-    required: [false, "Please Provide Last Name"],
+    required: [false, ErrorStatus.pleaseProvideLastName],
     maxlength: 50,
     trim: true,
   },
   gender: {
     type: String,
-    required: [false, "Please Provide Gender"],
+    required: [false, ErrorStatus.pleaseProvideGender],
     maxlength: 7,
   },
   email: {
     type: String,
-    required: [false, "Please Provide Email"],
+    required: [false, ErrorStatus.pleaseEnterEmail],
     validate: {
       validator: validator.isEmail,
-      message: "Please Provide Valid Email",
+      message: ErrorStatus.pleaseProvideValidEmail,
     },
     unique: true,
   },
 
   contact: {
     type: String,
-    required: [false, "Please Provide Contact"],
+    required: [false, ErrorStatus.pleaseProvideContact],
     maxlength: 10,
   },
   consultancyFees: {
     type: Number,
-    required: [true, "Please Provide Doctor Fees"],
+    required: [true, ErrorStatus.pleaseProvideDoctorFees],
   },
   doctorName: {
     type: String,
-    required: [true, "Please Provide Doctor Name"],
+    required: [true, ErrorStatus.pleaseProvideDoctorName],
     maxlength: 20,
   },
   specialization: {
@@ -53,19 +54,22 @@ const AppointmentSchema = new mongoose.Schema({
   },
   appDate: {
     type: Date,
-    required: [true, "Enter a appointment date !"],
+    required: [true, ErrorStatus.enterAppointmentDate],
   },
   appTime: {
     type: String,
-    required: [true, "Enter a appointment time !"],
+    required: [true, ErrorStatus.enterAppointmentTime],
   },
   currentStatus: {
     type: String,
-    default: "Active",
+    default: 'Active',
   },
   doctorStatus: {
     type: String,
-    default: "Active",
+    default: 'Active',
+  },
+  ErrorStatus: {
+    type: String,
   },
 });
-export default mongoose.model("Appointment", AppointmentSchema);
+export default mongoose.model('Appointment', AppointmentSchema);
