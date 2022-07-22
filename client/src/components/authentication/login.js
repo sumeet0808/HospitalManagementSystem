@@ -14,6 +14,8 @@ function Login() {
   const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
+  const data = {};
+
   const handlePatientLogin = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -22,10 +24,10 @@ function Login() {
         emailId,
         password,
       })
-      .then(() => {
-        // setSessionCookie({ emailId, password });
+      .then((res) => {
+        localStorage["token"] = res.data.token;
+        localStorage["user"] = JSON.stringify(res.data.patient);
         alert("Patient Login Sucessfully!!!!!");
-        // eslint-disable-next-line no-restricted-globals
         navigate("/Patient");
         setLoading(false);
       })
@@ -45,7 +47,9 @@ function Login() {
         emailId,
         password,
       })
-      .then(() => {
+      .then((res) => {
+        localStorage["token"] = res.data.token;
+        console.log("************", res.data);
         alert("Doctor Login Sucessfully!!!!!");
         navigate("/Doctor");
       })
@@ -64,6 +68,8 @@ function Login() {
       .then(() => {
         alert("Admin Login Sucessfully!!!!!");
         navigate("/adminPanel");
+        window.localStorage.setItem("userId", emailId);
+        window.localStorage.setItem("password", password);
       })
       .catch((error) => {
         alert("Invalid Credentials");

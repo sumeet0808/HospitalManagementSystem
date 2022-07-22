@@ -6,15 +6,22 @@ import Search from "./components/doctor/Search";
 import Contact from "./components/authentication/contact";
 import About from "./components/authentication/about";
 import { Patient } from "./components/patients";
-import { Adminpanel } from "./components/admin";
+import { Adminpanel, Dashboard } from "./components/admin";
 import Login from "./components/authentication/login";
 import Register from "./components/authentication/register";
+import PrivateRoute from "./privateRoute";
+import { useEffect, useState } from "react";
 import Layout from "./components/Layout";
+import Header from "./components/HeaderComponents/Header";
 import HeaderAuth from "./components/HeaderComponents/HeaderAuth";
 import LogoutHandler from "./components/authentication/logout";
-import Header from "./components/HeaderComponents/Header";
 
 function App() {
+  const [auth, setAuth] = useState(localStorage.getItem("token"));
+  useEffect(() => {
+    setAuth(localStorage.getItem("token"));
+    console.log("...............", auth);
+  }, []);
   return (
     <BrowserRouter>
       <Layout>
@@ -24,10 +31,17 @@ function App() {
           <Route path="/contact" exact element={<Contact />} />
           <Route path="/about" exact element={<About />} />
           <Route path="/" element={<Register />} />
-
           <Route path="/Doctor" element={<Doctor />} />
           <Route path="/Prescription" element={<Prescription />} />
           <Route path="/search" element={<Search />} />
+          <Route
+            path="/Patient"
+            element={
+              <PrivateRoute user={auth}>
+                <Patient />
+              </PrivateRoute>
+            }/>
+          <Route path="/login" element={<LogoutHandler />} />
           <Route path="/Patient" element={<Patient />} />
           <Route path="/adminPanel" element={<Adminpanel />} />
         </Routes>
