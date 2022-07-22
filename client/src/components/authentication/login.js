@@ -10,16 +10,18 @@ function Login() {
   const [emailId, setemailId] = useState("");
   const [password, setpassword] = useState("");
   const navigate = useNavigate();
-  const handlePatientLogin = (e) => {
+  const data = {};
+  const handlePatientLogin = async (e) => {
     e.preventDefault();
-    axios
+    await axios
       .post(`${config.BASE_URL}auth/patientLogin`, {
         emailId,
         password,
       })
-      .then(() => {
+      .then((res) => {
+        localStorage["token"] = res.data.token;
+        localStorage["user"] = JSON.stringify(res.data.patient);
         alert("Patient Login Sucessfully!!!!!");
-        // eslint-disable-next-line no-restricted-globals
         navigate("/Patient");
       })
       .catch((error) => {
@@ -34,7 +36,9 @@ function Login() {
         emailId,
         password,
       })
-      .then(() => {
+      .then((res) => {
+        localStorage["token"] = res.data.token;
+        console.log("************", res.data);
         alert("Doctor Login Sucessfully!!!!!");
         navigate("/Doctor");
       })
@@ -52,6 +56,8 @@ function Login() {
       .then(() => {
         alert("Admin Login Sucessfully!!!!!");
         navigate("/adminPanel");
+        window.localStorage.setItem("userId", emailId);
+        window.localStorage.setItem("password", password);
       })
       .catch((error) => {
         alert("Invalid Credentials");

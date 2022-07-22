@@ -37,7 +37,7 @@ const getAllPatientPrescriptionForAdmin = async (req, res) => {
         lastName: 1,
         appDate: 1,
         appTime: 1,
-        _id: 0,
+        _id: 1,
       },
     },
     {
