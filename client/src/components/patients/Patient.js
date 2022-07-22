@@ -134,17 +134,17 @@ const Patient = () => {
 
   ///////////////////cancelAppointmentStatusByPatient///////////////////////
 
-  const setData = (_id) => {
-    localStorage.setItem("_id", _id);
-  };
+  // const setData = (_id) => {
+  //   localStorage.setItem("_id", _id);
+  // };
 
-  const getData = () => {
-    axios
-      .get(`http://localhost:5000/api/v1/appointment/getallappointments`)
-      .then((getData) => {
-        setPatients(getData.data);
-      });
-  };
+  // const getData = () => {
+  //   axios
+  //     .get(`http://localhost:5000/api/v1/appointment/getallappointments`)
+  //     .then((getData) => {
+  //       setPatients(getData.data);
+  //     });
+  // };
 
   const onCancel = async (_id) => {
     await axios
@@ -157,7 +157,7 @@ const Patient = () => {
       )
       .then(() => {
         // console.log("szxdcgbhjm");
-        getData();
+        // getData();
       });
   };
 

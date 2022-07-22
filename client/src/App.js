@@ -12,6 +12,7 @@ import Register from "./components/authentication/register";
 import Layout from "./components/Layout";
 import Header from "./components/Header";
 import HeaderAuth from "./components/authentication/HeaderAuth";
+import LogoutHandler from "./components/authentication/logout"
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/about" element={<About />} />
+        <Route path="/login" element={<LogoutHandler />} />
       </Routes>
 
       <Layout>

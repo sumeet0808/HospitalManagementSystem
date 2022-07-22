@@ -6,7 +6,7 @@ import { BadRequestError, NotFoundError } from '../errors/index.js';
 
 //Admin
 const getAllAppointmentsForAdmin = async (req, res) => {
-  const appointment = await Appointment.aggregate([
+  const data = await Appointment.aggregate([
     {
       $project: {
         _id: 1,
@@ -24,17 +24,17 @@ const getAllAppointmentsForAdmin = async (req, res) => {
       },
     },
   ]);
-  res.status(200).json({
-    status: 'Success',
-    appointment,
+  res.status(StatusCodes.OK).json({
+    status: 'success',
+    data,
   });
 };
 //Doctor
 const getAllAppointmentForDoctor = async (req, res) => {
-  const appointments = await Appointment.aggregate([
+  const data = await Appointment.aggregate([
     {
       $project: {
-        _id: 0,
+        _id: 1,
         pId: 1,
         firstName: 1,
         lastName: 1,
@@ -48,10 +48,9 @@ const getAllAppointmentForDoctor = async (req, res) => {
     },
   ]);
   // SEND RESPONSE
-  res.status(200).json({
-    status: 'Success',
-    total: appointments.length,
-    appointments,
+  res.status(StatusCodes.OK).json({
+    status: 'success',
+    data,
   });
 };
 //Doctor
@@ -77,8 +76,8 @@ const getAppointmentPrescriptionList = async (req, res) => {
     },
     { $unwind: '$Prescription' },
   ]);
-  res.status(200).json({
-    status: 'Success',
+  res.status(StatusCodes.OK).json({
+    status: 'success',
     data,
   });
 };
@@ -90,13 +89,13 @@ const cancelAppointmentStatusByDoctor = async (req, res) => {
 
   const data = await Appointment.findOneAndUpdate(
     {
-      _id: req.body,
+      _id: req.body.AppointmentId,
     },
     { $set: { currentStatus: statusName } },
     { new: true }
   ); //condition
-  res.status(200).json({
-    status: 'Success',
+  res.status(StatusCodes.OK).json({
+    status: 'success',
     data,
   });
 };
@@ -112,22 +111,21 @@ const cancelAppointmentStatusByPatient = async (req, res) => {
     { $set: { currentStatus: statusName } },
     { new: true }
   );
-  res.status(200).json({
-    status: 'Success',
+  res.status(StatusCodes.OK).json({
+    status: 'success',
     data,
   });
 };
 //Patient
 const getAppointmentByPatientId = async (req, res) => {
   const { pId: patientId } = req.params;
-  const patient = await Appointment.find({ pId: patientId });
-  if (!patient) {
+  const data = await Appointment.find({ pId: patientId });
+  if (!data) {
     throw new NotFoundError(`No patient with id :${patientId}`);
   }
-  res.json({
+  res.status(StatusCodes.OK).json({
     status: 'Success',
-    total: patient.length,
-    patient,
+    data,
   });
 };
 //Patient
@@ -142,11 +140,10 @@ const createAppointment = async (req, res, next) => {
       appDate,
     } = req.body;
    
-    const appointment = await Appointment.create(req.body);
+    const data = await Appointment.create(req.body);
     res.status(StatusCodes.OK).json({
-      Status: 'Success',
-      Total: appointment.length,
-      appointment,
+      status: 'success',
+      data,
     });
   } catch (err) {
     next(err);
@@ -155,15 +152,15 @@ const createAppointment = async (req, res, next) => {
 //Admin
 const getAppointmentByContact = async (req, res) => {
   const { contact: appointmentContact } = req.params;
-  const appointment = await Appointment.findOne({
+  const data = await Appointment.findOne({
     contact: appointmentContact,
   });
-  if (!appointment) {
+  if (!data) {
     throw new NotFoundError(`No appointment with id :${appointmentContact}`);
   }
   res.status(StatusCodes.OK).json({
-    status: 'Success',
-    appointment,
+    status: 'success',
+    data,
   });
 };
 

@@ -97,6 +97,22 @@ const HeaderAuth = () => {
                   </a>
                 </Link>
               </li>
+
+              <li class="nav-item">
+                <Link to="/logout">
+                  <a
+                    class="nav-link js-scroll-trigger"
+                    href="contact.js"
+                    style={{
+                      color: "white",
+                      fontFamily: "IBM Plex Sans, sans-serif",
+                    }}
+                    // style="color: white;font-family: 'IBM Plex Sans', sans-serif;"
+                  >
+                    <h6>Logout</h6>
+                  </a>
+                </Link>
+              </li>
             </ul>
           </div>
         </div>

@@ -31,8 +31,8 @@ function Doctor() {
 
 const cancelAppointment = (_id) => {
    axios.post(`http://localhost:5000/api/v1/appointment/cancelAppointmentStatusbyDoctor`, {
-    "AppointmentId": _id,
-    "Status": "2"
+    AppointmentId: _id,
+    Status:  2
 })        
 .then(() => {
   dispatch(getAppointment());

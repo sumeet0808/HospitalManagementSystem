@@ -14,16 +14,16 @@ function Prescription() {
         disease,
     allergies,
     prescription          
-      // }).then(() => {
-      //     // eslint-disable-next-line no-restricted-globals
-      //     history.push('/')
+      }).then(() => {
+          // eslint-disable-next-line no-restricted-globals
+          history.push('/')
       })
   }
 
   useEffect(() => {
-      setDisease(localStorage.getItem('disease'));
-      setAllergies(localStorage.getItem('allergies'));
-      setPrescription(localStorage.getItem('prescription'));
+      // setDisease(localStorage.getItem('Disease'));
+      // setAllergies(localStorage.getItem('Allergies'));
+      // setPrescription(localStorage.getItem('Prescription'));
 
       setPID(localStorage.getItem('PId'))
   }, [])

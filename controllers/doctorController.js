@@ -50,7 +50,7 @@ const getDoctorByEmail = async (req, res) => {
     throw new NotFoundError(`No doctor with id :${doctorEmail}`);
   }
   res.status(StatusCodes.OK).json({
-    status: "Success",
+    status: "success",
     data,
   });
 };
