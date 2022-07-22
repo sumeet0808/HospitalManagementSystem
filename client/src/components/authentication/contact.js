@@ -11,7 +11,7 @@ function Contact() {
   const handleSendMessgae = (e) => {
     e.preventDefault();
     axios
-      .post(`${config.BASE_URL}contact`, {
+      .post(`${config.BASE_URL}contact/createQueries`, {
         userName,
         email,
         contact,

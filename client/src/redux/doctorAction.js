@@ -23,10 +23,10 @@ const doctorSlice = createSlice({
 export const getAppointment = () => {
   return async (dispatch) => {
     const getAllAppointment = async () => {
-      await axios.get(`${config.BASE_URL}getAllAppointment`).then((getUser) => {
+      await axios.get(`${config.BASE_URL}appointment/getAllAppointmentForDoctor`).then((getUser) => {
         dispatch(
           authActions.getAppointmentData({
-            appointmentData: getUser.data.data.appointments,
+            appointmentData: getUser.data.data,
           })
         );
       });
@@ -46,7 +46,7 @@ export const getAppointment = () => {
 export const getPrescription = () => {
   return async (dispatch) => {
     const getAllPrescription = async () => {
-      await axios.get(`${config.BASE_URL}getList`).then((getUser) => {
+      await axios.get(`${config.BASE_URL}prescribe/getAllPatientPrescriptionForDoctor`).then((getUser) => {
         dispatch(
           authActions.getPrescriptionData({
             prescriptionData: getUser.data.data,

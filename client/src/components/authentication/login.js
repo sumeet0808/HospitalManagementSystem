@@ -5,27 +5,38 @@ import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import config from "../../config";
+import {setSessionCookie} from './session'
+import Cookie from "js-cookie"
 
 function Login() {
   const [emailId, setemailId] = useState("");
   const [password, setpassword] = useState("");
+  const [loading, setLoading] = useState(false);
+
   const navigate = useNavigate();
-  const handlePatientLogin = (e) => {
+  const handlePatientLogin = async (e) => {
     e.preventDefault();
+    setLoading(true);
     axios
       .post(`${config.BASE_URL}auth/patientLogin`, {
         emailId,
         password,
       })
       .then(() => {
+        setSessionCookie({ emailId, password });
         alert("Patient Login Sucessfully!!!!!");
         // eslint-disable-next-line no-restricted-globals
         navigate("/Patient");
+        setLoading(false);
       })
       .catch((error) => {
         alert("Invalid Credentials");
       });
   };
+  
+  if (loading) {
+    return <h4>Logging in...</h4>;
+  }
 
   const handleDoctorLogin = (e) => {
     e.preventDefault();
@@ -42,6 +53,7 @@ function Login() {
         alert("Invalid Credentials");
       });
   };
+
   const handleAdminLogin = (e) => {
     e.preventDefault();
     axios

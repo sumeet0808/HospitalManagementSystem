@@ -10,14 +10,22 @@ import { Adminpanel } from "./components/admin";
 import Login from "./components/authentication/login";
 import Register from "./components/authentication/register";
 import Layout from "./components/Layout";
-import Header from "./components/HeaderComponents/Header";
-import HeaderAuth from "./components/HeaderComponents/HeaderAuth";
+import Header from "./components/Header";
+import HeaderAuth from "./components/authentication/HeaderAuth";
+import LogoutHandler from "./components/authentication/logout"
 
 function App() {
   return (
     <BrowserRouter>
       {window.location.pathname !== "/" ? <Header /> : <HeaderAuth />}
-      {/* <RegisterLoginLinks /> */}
+      <Routes>
+        <Route path="/" element={<Register />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/contact" element={<Contact />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/login" element={<LogoutHandler />} />
+      </Routes>
+
       <Layout>
       <Routes>
           <Route path="/" element={<Register />} />

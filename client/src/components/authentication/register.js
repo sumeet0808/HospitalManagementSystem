@@ -1,63 +1,52 @@
 import React from "react";
-// import Header from "./header";
 import { useState } from "react";
 import axios from "axios";
 import config from "../../config";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import InputField from "../common/InputField";
+
+
 function Register() {
-  const [firstName, setfirstName] = useState("");
-  const [lastName, setlasttName] = useState("");
-  const [emailId, setemailId] = useState("");
-  const [password, setpassword] = useState("");
-  const [confirmPassword, setconfirmPassword] = useState("");
-  const [phoneNo, setphoneNo] = useState("");
-  const [gender, setgender] = useState("");
+ 
+  const [data, setData] = useState({firstName:"",lastName:"",emailId:"",password:"",confirmPassword:"",phoneNo:"",gender:""})
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log(password, confirmPassword);
-    if (password === confirmPassword) {
-      axios
-        .post(`${config.BASE_URL}auth/register`, {
-          firstName,
-          lastName,
-          emailId,
-          password,
-          confirmPassword,
-          phoneNo,
-          gender,
-        })
-        .then(() => {
-          alert("Registered Successfully!!!!!!!!!!!!");
-          // eslint-disable-next-line no-restricted-globals
-          history.push("/patientlogin");
-        });
-      // .catch((error) => {
-      //   alert("Email already registered");
-      //   //alert("Registered Successfully!!!!!!!!!!!!")
-      // });
-    } else {
-      alert("password and confirm password should be same!!!!!!!");
-    }
+  const handleOnChange = (e) => {
+    const {name, value} = e.target
+    setData({...data, [name]:value})
   };
-
+ 
+  const handleOnSubmit = (e) => {
+    e.preventDefault(); 
+    // console.log(password, confirmPassword); 
+    if (data.password === data.confirmPassword) {
+      axios 
+        .post(`${config.BASE_URL}auth/register`, { 
+          ...data          
+        })
+        .then(() => {  
+          alert("Registered Successfully!!!!!!!!!!!!");  
+          // eslint-disable-next-line no-restricted-globals  
+          history.push("/patientlogin");  
+        }); 
+    } else {  
+      alert("password and confirm password should be same!!!!!!!"); 
+    } 
+  }; 
+ 
   return (
     <div class="p-3 mb-8 bg-light text-dark">
-      <div>
-        {/* <Header /> */}
-      </div>
-
       <div
         class="container register"
         style={{
           marginTop: "5%",
-          // marginBottom: "12%",
           fontFamily: "IBM Plex Sans, sans-serif",
         }}
       >
-        <form style={{ marginTop: "10%" }}>
-          {/* <form method="post" action="func2.php"> */}
+        <form style={{ marginTop: "10%" }}
+        onSubmit={handleOnSubmit}
+        >
+          
           <div class="row register-form">
             <div
               class="col-md-3 register-left"
@@ -67,34 +56,35 @@ function Register() {
             </div>
             <div class="col-md-4">
               <div class="form-group">
-                <input
+                <InputField
+                id="firstName"
                   type="text"
-                  class="form-control"
                   placeholder="First Name *"
                   name="firstName"
-                  onChange={(e) => setfirstName(e.target.value)}
+                  value={data.firstName}
+                  onChange={handleOnChange}
                   onkeydown="return alphaOnly(event);"
-                  required
                 />
               </div>
               <div style={{ marginTop: "10%" }} class="form-group">
-                <input
+                <InputField
+                id="lastName"
                   type="text"
-                  class="form-control"
                   placeholder="Last Name *"
                   name="lastName"
-                  onChange={(e) => setlasttName(e.target.value)}
+                  value={data.lastName}
+                  onChange={handleOnChange}
                   onkeydown="return alphaOnly(event);"
-                  required
                 />
               </div>
               <div style={{ marginTop: "10%" }} class="form-group">
-                <input
+                <InputField
+                id="emailId"
                   type="email"
-                  class="form-control"
                   placeholder="Your Email *"
                   name="emailId"
-                  onChange={(e) => setemailId(e.target.value)}
+                  value={data.emailId}
+                  onChange={handleOnChange}
                 />
               </div>
               <div style={{ marginTop: "10%" }} class="form-group">
@@ -103,9 +93,9 @@ function Register() {
                     <input
                       type="radio"
                       name="gender"
-                      value="Male"
-                      checked
-                      onChange={(e) => setgender(e.target.value)}
+                      value="male"
+                      checked={data.gender === 'male'}
+                      onChange={handleOnChange}
                     />
                     <span> Male </span>
                   </label>
@@ -113,8 +103,9 @@ function Register() {
                     <input
                       type="radio"
                       name="gender"
-                      value="Female"
-                      onChange={(e) => setgender(e.target.value)}
+                      value="female"
+                      checked={data.gender==='female'}
+                      onChange={handleOnChange}
                     />
                     <span>Female </span>
                   </label>
@@ -126,38 +117,37 @@ function Register() {
 
             <div class="col-md-4">
               <div class="form-group">
-                <input
+                <InputField
+                id="phoneNo"
                   type="tel"
                   minlength="10"
                   maxlength="10"
                   name="phoneNo"
-                  class="form-control"
-                  onChange={(e) => setphoneNo(e.target.value)}
+                  value={data.phoneNo}
+                  onChange={handleOnChange}
                   placeholder="Your Phone *"
                 />
               </div>
               <div style={{ marginTop: "10%" }} class="form-group">
-                <input
+                <InputField
+                id="password"
                   type="password"
-                  class="form-control"
                   placeholder="Password *"
-                  id="password"
                   name="password"
-                  onChange={(e) => setpassword(e.target.value)}
+                  value={data.password}
+                  onChange={handleOnChange}
                   onkeyup="check();"
-                  required
                 />
               </div>
               <div style={{ marginTop: "10%" }} class="form-group">
-                <input
-                  type="password"
-                  class="form-control"
+                <InputField
                   id="cpassword"
+                  type="password"
                   placeholder="Confirm Password *"
                   name="confirmPassword"
-                  onChange={(e) => setconfirmPassword(e.target.value)}
+                  value={data.confirmPassword}
+                  onChange={handleOnChange}
                   onkeyup="check();"
-                  required
                 />
                 <span id="message"></span>
               </div>
@@ -166,7 +156,7 @@ function Register() {
                 type="submit"
                 class="btnRegister"
                 value="Register"
-                onClick={handleSubmit}
+                href="/login"
               />
             </div>
           </div>

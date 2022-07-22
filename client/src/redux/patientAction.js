@@ -30,7 +30,7 @@ export const patientList = () => {
   return async (dispatch) => {
     const getPatientList = async () => {
       await axios
-        .get(`http://localhost:5000/api/v1/appointment/getallappointments`)
+        .get(`http://localhost:5000/api/v1/appointment/getAppointmentByPatientId`)
         .then((getUser) => {
           // console.log("patient=====", getUser.data);
           dispatch(
