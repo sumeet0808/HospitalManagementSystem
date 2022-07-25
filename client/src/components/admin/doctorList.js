@@ -3,10 +3,9 @@ import { doctorList } from "../../redux/adminAction";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 
-function Doctor() {
+function GetDoctor() {
   const dispatch = useDispatch();
   const doctors = useSelector((state) => state.admin.doctorData);
-
   useEffect(() => {
     dispatch(doctorList());
   }, []);
@@ -67,4 +66,4 @@ function Doctor() {
     </div>
   );
 }
-export default Doctor;
+export default GetDoctor;

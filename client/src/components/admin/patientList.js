@@ -5,7 +5,6 @@ import { useSelector } from "react-redux";
 function PatientList() {
   const dispatch = useDispatch();
   const patients = useSelector((state) => state.admin.patientData);
-
   useEffect(() => {
     dispatch(patientList());
   }, []);

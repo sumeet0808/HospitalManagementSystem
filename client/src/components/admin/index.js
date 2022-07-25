@@ -3,7 +3,7 @@ import Dashboard from "./dashboard";
 import AppointmentList from "./appointmentList";
 import AddDoctor from "./addDoctor";
 import DeleteDoctor from "./deleteDoctor";
-import Doctor from "./doctorList";
+import GetDoctor from "./doctorList";
 import PatientList from "./patientList";
 import PrescriptionList from "./prescriptionList";
 import QueryList from "./queryList";
@@ -13,7 +13,7 @@ export {
   AppointmentList,
   AddDoctor,
   DeleteDoctor,
-  Doctor,
+  GetDoctor,
   PatientList,
   PrescriptionList,
   QueryList,

@@ -62,9 +62,11 @@ export const doctorList = () => {
       await axios
         .get(`${config.BASE_URL}doctor/getAllDoctors`)
         .then((getUser) => {
-          // console.log("dat=====", adminActions, getUser.data.doctor);
+          console.log("dat=====", getUser.data.data);
           dispatch(
-            adminActions.getDoctorData({ doctorData: getUser.data.doctor })
+            adminActions.getDoctorData({
+              doctorData: getUser.data.data,
+            })
           );
         });
     };
@@ -86,10 +88,8 @@ export const patientList = () => {
       await axios
         .get(`${config.BASE_URL}patient/getAllPatients`)
         .then((getUser) => {
-          // console.log("patient=====", adminActions, getUser.data.patient);
-          dispatch(
-            adminActions.getPatientData({ patientData: getUser.data.patient })
-          );
+          console.log("patient=====", getUser.data);
+          dispatch(adminActions.getPatientData({ patientData: getUser.data }));
         });
     };
     try {
@@ -110,10 +110,10 @@ export const appointmentList = () => {
       await axios
         .get(`${config.BASE_URL}appointment/getAllAppointmentsForAdmin`)
         .then((getUser) => {
-          // console.log("appointmnet=====", getUser.data);
+          console.log("appointmnet=====", getUser.data);
           dispatch(
             adminActions.getAppointmentData({
-              appointment: getUser.data.appointment,
+              appointment: getUser.data,
             })
           );
         });
@@ -136,10 +136,10 @@ export const prescribeList = () => {
       await axios
         .get(`${config.BASE_URL}prescribe/getAllPatientPrescriptionForAdmin`)
         .then((getUser) => {
-          console.log("appointmnet=====", getUser.data.data.appointment);
+          console.log("prescribe=====", getUser.data);
           dispatch(
             adminActions.getPrescribeData({
-              prescribe: getUser.data.prescribe,
+              prescribe: getUser.data,
             })
           );
         });
@@ -162,10 +162,10 @@ export const queryList = () => {
       await axios
         .get(`${config.BASE_URL}contact/getAllQueries`)
         .then((getUser) => {
-          // console.log("appointmnet=====", getUser.data.data.appointment);
+          console.log("query=====", getUser.data);
           dispatch(
             adminActions.getQueryData({
-              query: getUser.data.contacts,
+              query: getUser.data,
             })
           );
         });
@@ -188,7 +188,7 @@ export const deleteDoctor = () => {
       await axios
         .delete(`${config.BASE_URL}doctor/deleteDoctorByEmail/${emailId}`)
         .then((getUser) => {
-          // console.log("dat=====", adminActions, getUser.data.doctor);
+          console.log("delete=====", getUser.data);
           dispatch(
             adminActions.getDoctorData({ doctorData: getUser.data.doctor })
           );

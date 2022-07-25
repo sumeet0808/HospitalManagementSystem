@@ -2,8 +2,9 @@ import React from "react";
 
 const Header = () => {
   const logout = () => {
-    localStorage.clear();
-    window.location.href = "./login";
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    window.location.href = "/login";
   };
 
   return (
@@ -28,7 +29,7 @@ const Header = () => {
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav mr-auto">
             <li class="nav-item">
-              <a class="nav-link" href="logout.js">
+              <a class="nav-link" href="/login">
                 <i class="fa fa-sign-out" aria-hidden="true"></i>
                 Logout
               </a>

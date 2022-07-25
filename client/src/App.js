@@ -6,7 +6,12 @@ import Search from "./components/doctor/Search";
 import Contact from "./components/authentication/contact";
 import About from "./components/authentication/about";
 import { Patient } from "./components/patients";
-import { Adminpanel, Dashboard } from "./components/admin";
+import {
+  Adminpanel,
+  Dashboard,
+  GetDoctor,
+  PatientList,
+} from "./components/admin";
 import Login from "./components/authentication/login";
 import Register from "./components/authentication/register";
 import PrivateRoute from "./privateRoute";
@@ -15,6 +20,7 @@ import Layout from "./components/Layout";
 import Header from "./components/HeaderComponents/Header";
 import HeaderAuth from "./components/HeaderComponents/HeaderAuth";
 import LogoutHandler from "./components/authentication/logout";
+import PageNotFound from "./pageNotFound";
 
 function App() {
   const [auth, setAuth] = useState(localStorage.getItem("token"));
@@ -27,12 +33,11 @@ function App() {
       <Layout>
         {window.location.pathname !== "/" ? <Header /> : <HeaderAuth />}
         <Routes>
+          <Route path="/" element={<Register />} />
           <Route path="/login" exact element={<Login />} />
           <Route path="/contact" exact element={<Contact />} />
           <Route path="/about" exact element={<About />} />
-          <Route path="/" element={<Register />} />
-          <Route path="/Doctor" element={<Doctor />} />
-          <Route path="/Prescription" element={<Prescription />} />
+          <Route path="/Doctor/Prescription" element={<Prescription />} />
           <Route path="/search" element={<Search />} />
           <Route
             path="/Patient"
@@ -40,10 +45,33 @@ function App() {
               <PrivateRoute user={auth}>
                 <Patient />
               </PrivateRoute>
-            }/>
-          <Route path="/login" element={<LogoutHandler />} />
-          <Route path="/Patient" element={<Patient />} />
-          <Route path="/adminPanel" element={<Adminpanel />} />
+            }
+          />
+          <Route
+            path="/Doctor"
+            element={
+              <PrivateRoute user={auth}>
+                <Doctor />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/adminPanel"
+            element={
+              <PrivateRoute user={auth}>
+                <Adminpanel />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/adminPanel/doctorList"
+            element={
+              <PrivateRoute user={auth}>
+                <GetDoctor />
+              </PrivateRoute>
+            }
+          />
+          <Route path="*" element={<PageNotFound />} />
         </Routes>
       </Layout>
     </BrowserRouter>
