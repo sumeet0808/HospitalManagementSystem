@@ -62,7 +62,7 @@ export const doctorList = () => {
       await axios
         .get(`${config.BASE_URL}doctor/getAllDoctors`)
         .then((getUser) => {
-          console.log("dat=====", getUser.data.data);
+          console.log("doctorList=====", getUser.data.data);
           dispatch(
             adminActions.getDoctorData({
               doctorData: getUser.data.data,
@@ -88,8 +88,10 @@ export const patientList = () => {
       await axios
         .get(`${config.BASE_URL}patient/getAllPatients`)
         .then((getUser) => {
-          console.log("patient=====", getUser.data);
-          dispatch(adminActions.getPatientData({ patientData: getUser.data }));
+          // console.log("patient=====", getUser.data.data);
+          dispatch(
+            adminActions.getPatientData({ patientData: getUser.data.data })
+          );
         });
     };
     try {
@@ -110,10 +112,10 @@ export const appointmentList = () => {
       await axios
         .get(`${config.BASE_URL}appointment/getAllAppointmentsForAdmin`)
         .then((getUser) => {
-          console.log("appointmnet=====", getUser.data);
+          console.log("appointmnet=====", getUser.data.data);
           dispatch(
             adminActions.getAppointmentData({
-              appointment: getUser.data,
+              appointment: getUser.data.data,
             })
           );
         });
@@ -136,10 +138,10 @@ export const prescribeList = () => {
       await axios
         .get(`${config.BASE_URL}prescribe/getAllPatientPrescriptionForAdmin`)
         .then((getUser) => {
-          console.log("prescribe=====", getUser.data);
+          console.log("prescribe=====", getUser.data.data);
           dispatch(
             adminActions.getPrescribeData({
-              prescribe: getUser.data,
+              prescribe: getUser.data.data,
             })
           );
         });
@@ -162,10 +164,10 @@ export const queryList = () => {
       await axios
         .get(`${config.BASE_URL}contact/getAllQueries`)
         .then((getUser) => {
-          console.log("query=====", getUser.data);
+          console.log("query=====", getUser.data.data);
           dispatch(
             adminActions.getQueryData({
-              query: getUser.data,
+              query: getUser.data.data,
             })
           );
         });
