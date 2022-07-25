@@ -1,24 +1,19 @@
 import React from "react";
 import { Link } from "react-router-dom";
-// import Header from "./header";
 import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import config from "../../config";
-import { setSessionCookie } from './session'
-import Cookie from "js-cookie"
 import InputField from "../common/InputField";
 
 function Login() {
-  // const [emailId, setemailId] = useState("");
-  // const [password, setpassword] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const [data, setData] = useState({ emailId: "", password: "" })
+  const [data, setData] = useState({ emailId: "", password: "" });
 
   const handleOnChange = (e) => {
-    const {name, value} = e.target
-    setData({...data, [name]:value})
+    const { name, value } = e.target;
+    setData({ ...data, [name]: value });
   };
 
   const navigate = useNavigate();
@@ -27,14 +22,15 @@ function Login() {
     setLoading(true);
     axios
 
-      .post(`${config.BASE_URL}auth/patientLogin`,{
-        ...data
+      .post(`${config.BASE_URL}auth/patientLogin`, {
+        ...data,
       })
-      .then(() => {
-        //setSessionCookie({ emailId, password });
+      .then((res) => {
         alert("Patient Login Sucessfully!!!!!");
         // eslint-disable-next-line no-restricted-globals
         navigate("/Patient");
+        localStorage.setItem("token", res.data.token);
+        localStorage.setItem("user", JSON.stringify(res.data));
         setLoading(false);
       })
       .catch((error) => {
@@ -50,11 +46,13 @@ function Login() {
     e.preventDefault();
     axios
       .post(`${config.BASE_URL}auth/doctorLogin`, {
-        ...data
+        ...data,
       })
-      .then(() => {
+      .then((res) => {
         alert("Doctor Login Sucessfully!!!!!");
         navigate("/Doctor");
+        localStorage.setItem("token", res.data.token);
+        localStorage.setItem("user", JSON.stringify(res.data));
       })
       .catch((error) => {
         alert("Invalid Credentials");
@@ -65,11 +63,13 @@ function Login() {
     e.preventDefault();
     axios
       .post(`${config.BASE_URL}auth/adminLogin`, {
-       ...data
+        ...data,
       })
-      .then(() => {
+      .then((res) => {
         alert("Admin Login Sucessfully!!!!!");
         navigate("/adminPanel");
+        localStorage.setItem("token", res.data.token);
+        localStorage.setItem("user", JSON.stringify(res.data));
       })
       .catch((error) => {
         alert("Invalid Credentials");
@@ -78,10 +78,6 @@ function Login() {
 
   return (
     <div class="p-3 mb-8 bg-light text-dark">
-      {/* > */}
-      <div>
-        {/* <Header /> */}
-      </div>
       <div
         class="container register"
         style={{
@@ -163,7 +159,7 @@ function Login() {
                       <div class="form-group">
                         <InputField
                           id="emailId"
-                          type="email"                          
+                          type="email"
                           placeholder="Email *"
                           name="emailId"
                           value={data.emailId}
@@ -177,7 +173,7 @@ function Login() {
                       <div class="form-group">
                         <InputField
                           id="password"
-                          type="password"                          
+                          type="password"
                           placeholder="Password*"
                           name="password"
                           value={data.password}
@@ -211,9 +207,9 @@ function Login() {
                   <div class="row register-form">
                     <div class="col-md-6">
                       <div class="form-group">
-                      <InputField
+                        <InputField
                           id="emailId"
-                          type="email"                          
+                          type="email"
                           placeholder="Email *"
                           name="emailId"
                           value={data.emailId}
@@ -225,9 +221,9 @@ function Login() {
                     </div>
                     <div class="col-md-6">
                       <div class="form-group">
-                      <InputField
+                        <InputField
                           id="password"
-                          type="password"                          
+                          type="password"
                           placeholder="Password*"
                           name="password"
                           value={data.password}
@@ -255,13 +251,12 @@ function Login() {
               >
                 <h3 class="register-heading">Login as Admin</h3>
                 <form>
-                  {/* <form method="post" action="func3.php"> */}
                   <div class="row register-form">
                     <div class="col-md-6">
                       <div class="form-group">
-                      <InputField
+                        <InputField
                           id="emailId"
-                          type="email"                          
+                          type="email"
                           placeholder="Email *"
                           name="emailId"
                           value={data.emailId}
@@ -273,9 +268,9 @@ function Login() {
                     </div>
                     <div class="col-md-6">
                       <div class="form-group">
-                      <InputField
+                        <InputField
                           id="password"
-                          type="password"                          
+                          type="password"
                           placeholder="Password*"
                           name="password"
                           value={data.password}
